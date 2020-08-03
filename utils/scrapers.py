@@ -53,6 +53,19 @@ class NewspaperScraper:
         """
         raise Exception("Not Implemented")
 
+    def get_elasticsearch_dict(self):
+        """
+        :return: Dictionary containing 'title', 'subtitles', 'text', 'authors' and 'date'
+        """
+        d = {
+            'title': self.get_title(),
+            'subtitles': self.get_subtitles(),
+            'text': self.get_text(),
+            'authors': self.get_authors(),
+            'date': self.get_date().strftime("%Y-%m-%dT%H:%M:%S")
+        }
+        return d
+
 
 class ElPeriodicoScraper(NewspaperScraper):
 
