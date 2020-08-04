@@ -1,21 +1,9 @@
 import argparse
-from scrapers import *
+from utils.scrapers import *
+from utils.elasticsearch_connector import save_news, print_all_news
 
 
-def save_data(scraper):
-    print("Title:")
-    print(scraper.get_title())
-    print("Subtitles:")
-    print(scraper.get_subtitles())
-    print("Text:")
-    print(scraper.get_text())
-    print("Author:")
-    print(scraper.get_authors())
-    print("Date:")
-    print(scraper.get_date())
-
-
-def get_scraper(newspaper):
+def get_scraper(newspaper, url):
     scraper_switcher = {
         "elperiodico": ElPeriodicoScraper,
         "lavanguardia": LaVanguardiaScraper,
@@ -25,7 +13,8 @@ def get_scraper(newspaper):
         "eldiario": ElDiarioScraper, 
         "okdiario": OkDiarioScraper
     }
-    return scraper_switcher.get(newspaper)
+    Scraper = scraper_switcher.get(newspaper)
+    return Scraper(url)
 
 
 if __name__ == '__main__':
@@ -45,8 +34,15 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument("--url", required=True, help="url of the news")
     parser.add_argument("--newspaper", required=True, help="name of the newspaper")
-    args = parser.parse_args()
 
-    # Get the correct scraper and save data
-    Scraper = get_scraper(args.newspaper.lower())
-    save_data(Scraper(args.url))
+    args = parser.parse_args()
+    newspaper = args.newspaper.lower()
+    url = args.url
+
+    # Get scraper and save data
+    scraper = get_scraper(newspaper, url)
+    res = save_news(scraper)
+    # print(res)
+
+    # Print all the news saved in elasticsearch (to check if we have saved them)
+    # print_all_news()
