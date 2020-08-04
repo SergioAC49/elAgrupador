@@ -22,7 +22,8 @@ def get_scraper(newspaper):
         "elpais": ElPaisScraper,
         "elmundo": ElMundoScraper,
         "abc": ABCScraper,
-        "eldiario": ElDiarioScraper
+        "eldiario": ElDiarioScraper, 
+        "okdiario": OkDiarioScraper
     }
     return scraper_switcher.get(newspaper)
 

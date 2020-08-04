@@ -3,7 +3,7 @@ import locale
 import requests
 
 from bs4 import BeautifulSoup
-
+from urllib import FancyURLopener
 
 class NewspaperScraper:
 
@@ -12,16 +12,15 @@ class NewspaperScraper:
         Read the URL and create the BeutifulSoup object
         :param url: URL of the news
         """
+
+        # Use FancyURLOpener to avoid webpage blocking
+        class MyOpener(FancyURLopener):
+            version = 'Mozilla/5.0 (Windows; U; Windows NT 5.1; it; rv:1.8.1.11) Gecko/20071127 Firefox/2.0.0.11'
+
+        mopen = MyOpener()
+
         self.url = url
-        headers = {
-            'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Methods': 'GET',
-            'Access-Control-Allow-Headers': 'Content-Type',
-            'Access-Control-Max-Age': '3600',
-            'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:52.0) Gecko/20100101 Firefox/52.0'
-        }
-        req = requests.get(url, headers)
-        self.soup = BeautifulSoup(req.content, 'html.parser')
+        self.soup = BeautifulSoup(mopen.open(url).read(), 'html.parser')
 
     def get_title(self):
         """
@@ -205,4 +204,30 @@ class ElDiarioScraper(NewspaperScraper):
         str_date = self.soup.find("footer", "news-date").find("div", "date").get_text()
         locale.setlocale(locale.LC_ALL, 'es_ES.utf8')
         date = datetime.datetime.strptime(str_date, "%d de %B de %Y - %H:%M h")
+        return date
+
+
+class OkDiarioScraper(NewspaperScraper):
+
+    def get_title(self):
+        return self.soup.findChild("h1", "entry-title").get_text().encode("utf-8")
+
+    def get_subtitles(self):
+        all_subs = self.soup.find("div", "subtitles").find_all("h2")
+        return [sub.get_text().encode("utf-8") for sub in all_subs]
+
+    def get_text(self):
+        all_p = self.soup.find("div", "entry-content").find_all("p")
+        p_text = [p.get_text() for p in all_p]
+        return "\n".join(p_text).encode("utf-8")
+
+    def get_authors(self):
+        all_a = self.soup.find_all("li", "author-name")
+        authors = [a.get_text().encode("utf-8") for a in all_a]
+        return authors
+
+    def get_date(self):
+        str_date = self.soup.find("time", "date").get_text()
+        locale.setlocale(locale.LC_ALL, 'Spanish_Spain.1252') # Para Windows hay que poner 'Spanish_Spain.1252' en lugar de es_ES.UTF-8
+        date = datetime.datetime.strptime(str_date, "%d/%m/%Y %H:%M")
         return date
