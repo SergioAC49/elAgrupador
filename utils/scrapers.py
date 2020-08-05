@@ -219,3 +219,93 @@ class ElDiarioScraper(NewspaperScraper):
         locale.setlocale(locale.LC_ALL, 'es_ES.utf8')
         date = datetime.datetime.strptime(str_date, "%d de %B de %Y - %H:%M h")
         return date
+    
+class LaRazonScraper(NewspaperScraper):
+
+    def get_title(self):
+        return self.soup.find("h1").find("span").get_text()
+
+    def get_subtitles(self):
+        return = self.soup.find("h2").find("span").get_text()
+
+    def get_text(self):
+        all_p = self.soup.find("section").find_all("p")
+        p_text = [p.get_text() for p in all_p]
+        return "\n".join(p_text)
+
+    def get_authors(self):
+        return self.soup.find("div", "byline__credits-container").find("a").get_text()
+
+    def get_date(self):
+        str_date = self.soup.find("div", "byline__last-update").find("span", "font--primary byline__date").get_text()
+        locale.setlocale(locale.LC_ALL, 'es_ES.utf8')
+        date = datetime.datetime.strptime(str_date, "%d-%m-%Y | %H:%M H")
+        return date
+    
+class veinteminutosScraper(NewspaperScraper):
+
+    def get_title(self):
+        return self.soup.find("h1","notice-title").get_text()
+
+    def get_subtitles(self):
+        all_li = self.soup.find("div", "article-intro").find_all("li")
+        li_text = [li.get_text() for li in all_li]
+        return "\n".join(li_text)
+
+    def get_text(self):
+        all_p = self.soup.find("div","article-text").find_all("p")
+        p_text = [p.get_text() for p in all_p]
+        return "\n".join(p_text)
+
+    def get_authors(self):
+        return self.soup.find("span", "article-author").get_text()
+
+    def get_date(self):
+        str_date = self.soup.find("span", "article-date").get_text()
+        locale.setlocale(locale.LC_ALL, 'es_ES.utf8')
+        date = datetime.datetime.strptime(str_date, "%d.%m.%Y - %H:%Mh")
+        return date
+    
+class okdiarioScraper(NewspaperScraper):
+
+    def get_title(self):
+        return self.soup.find("h1","entry-title").get_text()
+
+    def get_subtitles(self):
+        return self.soup.find("div", "subtitles").find("h2").get_text()
+
+    def get_text(self):
+        all_p = self.soup.find("div","entry-content").find_all("p")
+        p_text = [p.get_text() for p in all_p]
+        return "\n".join(p_text)
+
+    def get_authors(self):
+        return self.soup.find("li", "author-name").get_text()
+
+    def get_date(self):
+        str_date = self.soup.find("time", "date").get_text()
+        locale.setlocale(locale.LC_ALL, 'es_ES.utf8')
+        date = datetime.datetime.strptime(str_date, "%d/%m/%Y %H:%M")
+        return date
+    
+class publicoScraper(NewspaperScraper):
+
+    def get_title(self):
+        return self.soup.find("div","title").find("a").get_text()
+
+    def get_subtitles(self):
+        return self.soup.find("div", "article-header-epigraph col-12").find("h2").get_text()
+
+    def get_text(self):
+        all_p = self.soup.find("div","article-text").find_all("p")
+        p_text = [p.get_text() for p in all_p]
+        return "\n".join(p_text)
+
+    def get_authors(self):
+        return self.soup.find("li", "author-name").get_text()
+
+    def get_date(self):
+        str_date = self.soup.find("header", "article-published-info").find("span","published").get_text()
+        locale.setlocale(locale.LC_ALL, 'es_ES.utf8')
+        date = datetime.datetime.strptime(str_date, "%d/%m/%Y %H:%M")
+        return date
