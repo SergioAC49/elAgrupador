@@ -242,7 +242,7 @@ class LaRazonScraper(NewspaperScraper):
         date = datetime.datetime.strptime(str_date, "%d-%m-%Y | %H:%M H")
         return date
     
-class veinteminutosScraper(NewspaperScraper):
+class VeinteminutosScraper(NewspaperScraper):
 
     def get_title(self):
         return self.soup.find("h1","notice-title").get_text()
@@ -266,7 +266,7 @@ class veinteminutosScraper(NewspaperScraper):
         date = datetime.datetime.strptime(str_date, "%d.%m.%Y - %H:%Mh")
         return date
     
-class okdiarioScraper(NewspaperScraper):
+class OkdiarioScraper(NewspaperScraper):
 
     def get_title(self):
         return self.soup.find("h1","entry-title").get_text()
@@ -288,7 +288,7 @@ class okdiarioScraper(NewspaperScraper):
         date = datetime.datetime.strptime(str_date, "%d/%m/%Y %H:%M")
         return date
     
-class publicoScraper(NewspaperScraper):
+class PublicoScraper(NewspaperScraper):
 
     def get_title(self):
         return self.soup.find("div","title").find("a").get_text()
