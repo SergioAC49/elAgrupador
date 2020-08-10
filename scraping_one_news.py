@@ -10,7 +10,11 @@ def get_scraper(newspaper, url):
         "elpais": ElPaisScraper,
         "elmundo": ElMundoScraper,
         "abc": ABCScraper,
-        "eldiario": ElDiarioScraper
+        "eldiario": ElDiarioScraper,
+        "larazon": LaRazonScraper,
+        "20minutos": VeinteminutosScraper,
+        "okdiario": OkdiarioScraper,
+        "publico": PublicoScraper
     }
     Scraper = scraper_switcher.get(newspaper)
     return Scraper(url)
@@ -28,6 +32,10 @@ if __name__ == '__main__':
     'elmundo': https://www.elmundo.es/espana/2020/07/07/5f0452b9fc6c83977f8b462a.html
     'abc': https://www.abc.es/tecnologia/moviles/aplicaciones/abci-estados-unidos-extiende-lucha-contra-china-estudia-resringir-tiktok-y-otras-aplicaciones-chinas-202007071235_noticia.html#vca=rrss&vmc=abc-es&vso=tw&vli=cm-general&_tcode=ZTN2MnUx
     'eldiario': https://www.eldiario.es/politica/iglesias-asegura-comparte-sanchez-estrategia-negociadora-presupuestos_1_6087609.html
+    'larazon': https://www.larazon.es/deportes/20200810/45ctvvui4vhozpstawbom7hqmu.html
+    '20minutos: https://www.20minutos.es/noticia/4348818/0/restricciones-impuestas-frenar-coronavirus-gente-fia-experiencia-no-datos/
+    'okdiario': https://okdiario.com/espana/moncloa-prepara-nueva-crisis-sanchez-iglesias-negociacion-presupuestos-5942945
+    'publico: https://www.publico.es/politica/juan-carlos-i-garzon-discrepa-sanchez-problema-espana-monarquia.html
     """
     # Read arguments
     parser = argparse.ArgumentParser()
