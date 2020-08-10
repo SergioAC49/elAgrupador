@@ -3,7 +3,7 @@ import locale
 import requests
 
 from bs4 import BeautifulSoup
-from urllib import FancyURLopener
+from urllib.request import FancyURLopener
 
 class NewspaperScraper:
 
@@ -223,24 +223,48 @@ class ElDiarioScraper(NewspaperScraper):
 class OkDiarioScraper(NewspaperScraper):
 
     def get_title(self):
-        return self.soup.findChild("h1", "entry-title").get_text().encode("utf-8")
+        return self.soup.findChild("h1", "entry-title").get_text()
 
     def get_subtitles(self):
         all_subs = self.soup.find("div", "subtitles").find_all("h2")
-        return [sub.get_text().encode("utf-8") for sub in all_subs]
+        return [sub.get_text() for sub in all_subs]
 
     def get_text(self):
         all_p = self.soup.find("div", "entry-content").find_all("p")
         p_text = [p.get_text() for p in all_p]
-        return "\n".join(p_text).encode("utf-8")
+        return "\n".join(p_text)
 
     def get_authors(self):
         all_a = self.soup.find_all("li", "author-name")
-        authors = [a.get_text().encode("utf-8") for a in all_a]
+        authors = [a.get_text() for a in all_a]
         return authors
 
     def get_date(self):
         str_date = self.soup.find("time", "date").get_text()
-        locale.setlocale(locale.LC_ALL, 'Spanish_Spain.1252') # Para Windows hay que poner 'Spanish_Spain.1252' en lugar de es_ES.UTF-8
+        date = datetime.datetime.strptime(str_date, "%d/%m/%Y %H:%M")
+        return date
+
+
+class PublicoScraper(NewspaperScraper):
+
+    def get_title(self):
+        return self.soup.findChild("div", "article-header-title").findChild("h1").get_text()
+
+    def get_subtitles(self):
+        all_subs = self.soup.find("div", "article-header-epigraph").find_all("h2")
+        return [sub.get_text() for sub in all_subs]
+
+    def get_text(self):
+        all_p = self.soup.find("div", "article-text").find_all("p")
+        p_text = [p.get_text() for p in all_p]
+        return "\n".join(p_text)
+
+    def get_authors(self):
+        all_a = self.soup.find_all("p", "signature")
+        authors = [a.get_text() for a in all_a]
+        return authors
+
+    def get_date(self):
+        str_date = self.soup.find("span", "published").get_text()
         date = datetime.datetime.strptime(str_date, "%d/%m/%Y %H:%M")
         return date

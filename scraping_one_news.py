@@ -11,7 +11,8 @@ def get_scraper(newspaper, url):
         "elmundo": ElMundoScraper,
         "abc": ABCScraper,
         "eldiario": ElDiarioScraper, 
-        "okdiario": OkDiarioScraper
+        "okdiario": OkDiarioScraper, 
+        "publico": PublicoScraper
     }
     Scraper = scraper_switcher.get(newspaper)
     return Scraper(url)
@@ -29,6 +30,8 @@ if __name__ == '__main__':
     'elmundo': https://www.elmundo.es/espana/2020/07/07/5f0452b9fc6c83977f8b462a.html
     'abc': https://www.abc.es/tecnologia/moviles/aplicaciones/abci-estados-unidos-extiende-lucha-contra-china-estudia-resringir-tiktok-y-otras-aplicaciones-chinas-202007071235_noticia.html#vca=rrss&vmc=abc-es&vso=tw&vli=cm-general&_tcode=ZTN2MnUx
     'eldiario': https://www.eldiario.es/politica/iglesias-asegura-comparte-sanchez-estrategia-negociadora-presupuestos_1_6087609.html
+    'okdiario': https://okdiario.com/espana/podemos-admite-primera-vez-perdidas-debacles-electorales-2-648-097-2019-5968444
+    'publico': https://www.publico.es/espana/prevision-meteorologica-temperaturas-bajan-gran-parte-espana-15-provincias-estaran-aviso-calor-8-tormentas-consulta-prevision-comunidad.html
     """
     # Read arguments
     parser = argparse.ArgumentParser()
@@ -45,4 +48,4 @@ if __name__ == '__main__':
     # print(res)
 
     # Print all the news saved in elasticsearch (to check if we have saved them)
-    # print_all_news()
+    print_all_news()
