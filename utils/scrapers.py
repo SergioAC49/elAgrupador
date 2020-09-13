@@ -3,7 +3,7 @@ import locale
 import requests
 
 from bs4 import BeautifulSoup
-from urllib.request import FancyURLopener
+
 
 class NewspaperScraper:
 
@@ -12,15 +12,16 @@ class NewspaperScraper:
         Read the URL and create the BeutifulSoup object
         :param url: URL of the news
         """
-
-        # Use FancyURLOpener to avoid webpage blocking
-        class MyOpener(FancyURLopener):
-            version = 'Mozilla/5.0 (Windows; U; Windows NT 5.1; it; rv:1.8.1.11) Gecko/20071127 Firefox/2.0.0.11'
-
-        mopen = MyOpener()
-
-        self.url = url.encode('utf8')
-        self.soup = BeautifulSoup(mopen.open(url).read(), 'html.parser')
+        self.url = url
+        headers = {
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'GET',
+            'Access-Control-Allow-Headers': 'Content-Type',
+            'Access-Control-Max-Age': '3600',
+            'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:52.0) Gecko/20100101 Firefox/52.0'
+        }
+        req = requests.get(url, headers)
+        self.soup = BeautifulSoup(req.content, 'html.parser')
 
     def get_title(self):
         """
@@ -218,53 +219,93 @@ class ElDiarioScraper(NewspaperScraper):
         locale.setlocale(locale.LC_ALL, 'es_ES.utf8')
         date = datetime.datetime.strptime(str_date, "%d de %B de %Y - %H:%M h")
         return date
-
-
-class OkDiarioScraper(NewspaperScraper):
+    
+class LaRazonScraper(NewspaperScraper):
 
     def get_title(self):
-        return self.soup.findChild("h1", "entry-title").get_text()
+        return self.soup.find("h1").find("span").get_text()
 
     def get_subtitles(self):
-        all_subs = self.soup.find("div", "subtitles").find_all("h2")
-        return [sub.get_text() for sub in all_subs]
+        return self.soup.find("h2").find("span").get_text()
 
     def get_text(self):
-        all_p = self.soup.find("div", "entry-content").find_all("p")
+        all_p = self.soup.find("section").find_all("p")
         p_text = [p.get_text() for p in all_p]
         return "\n".join(p_text)
 
     def get_authors(self):
-        all_a = self.soup.find_all("li", "author-name")
-        authors = [a.get_text() for a in all_a]
-        return authors
+        return self.soup.find("div", "byline__credits-container").find("a").get_text()
+
+    def get_date(self):
+        str_date = self.soup.find("div", "byline__last-update").find("span", "font--primary byline__date").get_text()
+        locale.setlocale(locale.LC_ALL, 'es_ES.utf8')
+        date = datetime.datetime.strptime(str_date, "%d-%m-%Y | %H:%M H")
+        return date
+    
+class VeinteminutosScraper(NewspaperScraper):
+
+    def get_title(self):
+        return self.soup.find("h1","notice-title").get_text()
+
+    def get_subtitles(self):
+        all_li = self.soup.find("div", "article-intro").find_all("li")
+        li_text = [li.get_text() for li in all_li]
+        return "\n".join(li_text)
+
+    def get_text(self):
+        all_p = self.soup.find("div","article-text").find_all("p")
+        p_text = [p.get_text() for p in all_p]
+        return "\n".join(p_text)
+
+    def get_authors(self):
+        return self.soup.find("span", "article-author").get_text()
+
+    def get_date(self):
+        str_date = self.soup.find("span", "article-date").get_text()
+        locale.setlocale(locale.LC_ALL, 'es_ES.utf8')
+        date = datetime.datetime.strptime(str_date, "%d.%m.%Y - %H:%Mh")
+        return date
+    
+class OkdiarioScraper(NewspaperScraper):
+
+    def get_title(self):
+        return self.soup.find("h1","entry-title").get_text()
+
+    def get_subtitles(self):
+        return self.soup.find("div", "subtitles").find("h2").get_text()
+
+    def get_text(self):
+        all_p = self.soup.find("div","entry-content").find_all("p")
+        p_text = [p.get_text() for p in all_p]
+        return "\n".join(p_text)
+
+    def get_authors(self):
+        return self.soup.find("li", "author-name").get_text()
 
     def get_date(self):
         str_date = self.soup.find("time", "date").get_text()
+        locale.setlocale(locale.LC_ALL, 'es_ES.utf8')
         date = datetime.datetime.strptime(str_date, "%d/%m/%Y %H:%M")
         return date
-
-
+    
 class PublicoScraper(NewspaperScraper):
 
     def get_title(self):
-        return self.soup.findChild("div", "article-header-title").findChild("h1").get_text()
+        return self.soup.find("div","title").find("a").get_text()
 
     def get_subtitles(self):
-        all_subs = self.soup.find("div", "article-header-epigraph").find_all("h2")
-        return [sub.get_text() for sub in all_subs]
+        return self.soup.find("div", "article-header-epigraph col-12").find("h2").get_text()
 
     def get_text(self):
-        all_p = self.soup.find("div", "article-text").find_all("p")
+        all_p = self.soup.find("div","article-text").find_all("p")
         p_text = [p.get_text() for p in all_p]
         return "\n".join(p_text)
 
     def get_authors(self):
-        all_a = self.soup.find_all("p", "signature")
-        authors = [a.get_text() for a in all_a]
-        return authors
+        return self.soup.find("li", "author-name").get_text()
 
     def get_date(self):
-        str_date = self.soup.find("span", "published").get_text()
+        str_date = self.soup.find("header", "article-published-info").find("span","published").get_text()
+        locale.setlocale(locale.LC_ALL, 'es_ES.utf8')
         date = datetime.datetime.strptime(str_date, "%d/%m/%Y %H:%M")
         return date
