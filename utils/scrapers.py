@@ -19,7 +19,7 @@ class NewspaperScraper:
 
         mopen = MyOpener()
 
-        self.url = url
+        self.url = url.encode('utf8')
         self.soup = BeautifulSoup(mopen.open(url).read(), 'html.parser')
 
     def get_title(self):
