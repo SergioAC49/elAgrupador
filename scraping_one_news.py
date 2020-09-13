@@ -12,8 +12,8 @@ def get_scraper(newspaper, url):
         "abc": ABCScraper,
         "eldiario": ElDiarioScraper,
         "larazon": LaRazonScraper,
-        "20minutos": VeinteminutosScraper,
-        "okdiario": OkdiarioScraper,
+        "20minutos": VeinteMinutosScraper,
+        "okdiario": OkDiarioScraper,
         "publico": PublicoScraper
     }
     Scraper = scraper_switcher.get(newspaper)

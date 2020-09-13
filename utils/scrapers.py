@@ -219,6 +219,7 @@ class ElDiarioScraper(NewspaperScraper):
         locale.setlocale(locale.LC_ALL, 'es_ES.utf8')
         date = datetime.datetime.strptime(str_date, "%d de %B de %Y - %H:%M h")
         return date
+
     
 class LaRazonScraper(NewspaperScraper):
 
@@ -241,8 +242,9 @@ class LaRazonScraper(NewspaperScraper):
         locale.setlocale(locale.LC_ALL, 'es_ES.utf8')
         date = datetime.datetime.strptime(str_date, "%d-%m-%Y | %H:%M H")
         return date
+
     
-class VeinteminutosScraper(NewspaperScraper):
+class VeinteMinutosScraper(NewspaperScraper):
 
     def get_title(self):
         return self.soup.find("h1","notice-title").get_text()
@@ -265,8 +267,9 @@ class VeinteminutosScraper(NewspaperScraper):
         locale.setlocale(locale.LC_ALL, 'es_ES.utf8')
         date = datetime.datetime.strptime(str_date, "%d.%m.%Y - %H:%Mh")
         return date
+
     
-class OkdiarioScraper(NewspaperScraper):
+class OkDiarioScraper(NewspaperScraper):
 
     def get_title(self):
         return self.soup.find("h1","entry-title").get_text()
@@ -287,6 +290,7 @@ class OkdiarioScraper(NewspaperScraper):
         locale.setlocale(locale.LC_ALL, 'es_ES.utf8')
         date = datetime.datetime.strptime(str_date, "%d/%m/%Y %H:%M")
         return date
+
     
 class PublicoScraper(NewspaperScraper):
 
