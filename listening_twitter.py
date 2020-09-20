@@ -10,7 +10,7 @@ import time, logging
 logging.basicConfig(level=logging.INFO, format='%(threadName)s: %(message)s')
 
 def activateListener(newspaper):
-    logging.info(f'Listener activated: {newspaper}')
+    logging.info('Listener activated: {newspaper}')
     listener = MyStreamListener(newspaper)
     listener.my_start()
 

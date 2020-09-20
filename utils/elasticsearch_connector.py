@@ -9,7 +9,7 @@ def save_news(scraper):
     :param scraper: NewspaperScraper object
     :return: Elasticsearch response after indexing the news
     """
-    es = Elasticsearch()  # TODO: change configuration when we start using the cluster
+    es = Elasticsearch(port=8890)  # TODO: change configuration when we start using the cluster
     response = es.index(
         index='news',
         id=scraper.url,
@@ -22,7 +22,7 @@ def print_all_news():
     """
     Print all the news saved in elasticsearch
     """
-    es = Elasticsearch()
+    es = Elasticsearch(port=8890)
     response = es.search(
         index="news",
         body={

@@ -34,7 +34,7 @@ class MyStreamListener(tweepy.StreamListener):
         self.newspaper = newspaper
 
     def on_status(self, status):
-        logging.info("==========================================")
+        # logging.info("==========================================")
         # Test if the tweet is from the newspaper account
         # Discard RT and mentions from other users
         newspaper = self.newspaper
