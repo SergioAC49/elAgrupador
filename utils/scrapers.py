@@ -240,8 +240,11 @@ class ElDiarioScraper(NewspaperScraper):
         return "\n".join(p_text)
 
     def get_authors(self):
-        all_a = self.soup.find("p", "authors").find_all("a")
-        authors = [a.get_text() for a in all_a]
+        try:
+            all_a = self.soup.find("p", "authors").find_all("a")
+            authors = [a.get_text() for a in all_a]
+        except:
+            authors = self.soup.find("div", "author-pill-wrapper").find("div", "featured-data").get_text()
         return authors
 
     def get_date(self):
