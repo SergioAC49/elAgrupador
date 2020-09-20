@@ -119,7 +119,11 @@ class LaVanguardiaScraper(NewspaperScraper):
         return "\n".join(p_text)
 
     def get_authors(self):
-        return [self.soup.find("a", "d-signature__name").find("span").get_text()]
+        try:
+            authors = [self.soup.find("a", "d-signature__name").find("span").get_text()]
+        except:
+            authors = [self.soup.find("span", "d-signature__name").get_text()]
+        return authors
 
     def get_date(self):
         str_date = self.soup.find("time", "d-signature__time")['datetime']
@@ -155,9 +159,10 @@ class ElPaisScraper(NewspaperScraper):
         try:
             date = datetime.datetime.strptime(str_date[:6] + "." + str_date[6:], "%d %b %Y - %H:%M %Z")
         except:
-            date = datetime.datetime.strptime(str_date, "%d %b %Y - %H:%M %Z")
-        else:
-            date = datetime.datetime.now()
+            try:
+                date = datetime.datetime.strptime(str_date, "%d %b %Y - %H:%M %Z")
+            except:
+                date = datetime.datetime.now()
         return date
 
 
