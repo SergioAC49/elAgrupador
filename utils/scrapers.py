@@ -7,12 +7,13 @@ from bs4 import BeautifulSoup
 
 class NewspaperScraper:
 
-    def __init__(self, url):
+    def __init__(self, url, newspaper):
         """
         Read the URL and create the BeutifulSoup object
         :param url: URL of the news
         """
         self.url = url
+        self.newspaper = newspaper
         headers = {
             'Access-Control-Allow-Origin': '*',
             'Access-Control-Allow-Methods': 'GET',
@@ -58,6 +59,7 @@ class NewspaperScraper:
         :return: Dictionary containing 'title', 'subtitles', 'text', 'authors' and 'date'
         """
         d = {
+            'newspaper': self.newspaper,
             'title': self.get_title(),
             'subtitles': self.get_subtitles(),
             'text': self.get_text(),
@@ -68,6 +70,9 @@ class NewspaperScraper:
 
 
 class ElPeriodicoScraper(NewspaperScraper):
+
+    def __init__(self, url):
+        super().__init__(url, "ElPeriodico")
 
     def get_title(self):
         return self.soup.find("h1", "title").get_text()
@@ -98,6 +103,9 @@ class ElPeriodicoScraper(NewspaperScraper):
 
 class LaVanguardiaScraper(NewspaperScraper):
 
+    def __init__(self, url):
+        super().__init__(url, "LaVanguardia")
+
     def get_title(self):
         return self.soup.find("h1", "d-title__txt").get_text()
 
@@ -120,6 +128,9 @@ class LaVanguardiaScraper(NewspaperScraper):
 
 
 class ElPaisScraper(NewspaperScraper):
+
+    def __init__(self, url):
+        super().__init__(url, "ElPais")
 
     def get_title(self):
         return self.soup.find("h1", "a_t").get_text()
@@ -152,6 +163,9 @@ class ElPaisScraper(NewspaperScraper):
 
 class ElMundoScraper(NewspaperScraper):
 
+    def __init__(self, url):
+        super().__init__(url, "ElMundo")
+
     def get_title(self):
         return self.soup.find("h1", "ue-c-article__headline").get_text()
 
@@ -177,6 +191,9 @@ class ElMundoScraper(NewspaperScraper):
 
 class ABCScraper(NewspaperScraper):
 
+    def __init__(self, url):
+        super().__init__(url, "ABC")
+
     def get_title(self):
         return self.soup.find("span", "titular").get_text()
 
@@ -201,6 +218,9 @@ class ABCScraper(NewspaperScraper):
 
 
 class ElDiarioScraper(NewspaperScraper):
+
+    def __init__(self, url):
+        super().__init__(url, "ElDiario")
 
     def get_title(self):
         return self.soup.find("h1", "title").get_text()
@@ -228,6 +248,9 @@ class ElDiarioScraper(NewspaperScraper):
     
 class LaRazonScraper(NewspaperScraper):
 
+    def __init__(self, url):
+        super().__init__(url, "LaRazon")
+
     def get_title(self):
         return self.soup.find("h1").find("span").get_text()
 
@@ -250,6 +273,9 @@ class LaRazonScraper(NewspaperScraper):
 
     
 class VeinteMinutosScraper(NewspaperScraper):
+
+    def __init__(self, url):
+        super().__init__(url, "20minutos")
 
     def get_title(self):
         return self.soup.find("h1","notice-title").get_text()
@@ -276,6 +302,9 @@ class VeinteMinutosScraper(NewspaperScraper):
     
 class OkDiarioScraper(NewspaperScraper):
 
+    def __init__(self, url):
+        super().__init__(url, "OkDiario")
+
     def get_title(self):
         return self.soup.find("h1","entry-title").get_text()
 
@@ -298,6 +327,9 @@ class OkDiarioScraper(NewspaperScraper):
 
     
 class PublicoScraper(NewspaperScraper):
+
+    def __init__(self, url):
+        super().__init__(url, "Publico")
 
     def get_title(self):
         return self.soup.find("div","title").find("a").get_text()

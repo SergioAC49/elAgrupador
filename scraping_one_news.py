@@ -32,15 +32,12 @@ if __name__ == '__main__':
     'elmundo': https://www.elmundo.es/espana/2020/07/07/5f0452b9fc6c83977f8b462a.html
     'abc': https://www.abc.es/tecnologia/moviles/aplicaciones/abci-estados-unidos-extiende-lucha-contra-china-estudia-resringir-tiktok-y-otras-aplicaciones-chinas-202007071235_noticia.html#vca=rrss&vmc=abc-es&vso=tw&vli=cm-general&_tcode=ZTN2MnUx
     'eldiario': https://www.eldiario.es/politica/iglesias-asegura-comparte-sanchez-estrategia-negociadora-presupuestos_1_6087609.html
-<<<<<<< HEAD
     'okdiario': https://okdiario.com/espana/podemos-admite-primera-vez-perdidas-debacles-electorales-2-648-097-2019-5968444
     'publico': https://www.publico.es/espana/prevision-meteorologica-temperaturas-bajan-gran-parte-espana-15-provincias-estaran-aviso-calor-8-tormentas-consulta-prevision-comunidad.html
-=======
     'larazon': https://www.larazon.es/deportes/20200810/45ctvvui4vhozpstawbom7hqmu.html
     '20minutos: https://www.20minutos.es/noticia/4348818/0/restricciones-impuestas-frenar-coronavirus-gente-fia-experiencia-no-datos/
     'okdiario': https://okdiario.com/espana/moncloa-prepara-nueva-crisis-sanchez-iglesias-negociacion-presupuestos-5942945
     'publico: https://www.publico.es/politica/juan-carlos-i-garzon-discrepa-sanchez-problema-espana-monarquia.html
->>>>>>> 17f1e4e7135f5bbfcd32990ef40d03fe5de8c14c
     """
     # Read arguments
     parser = argparse.ArgumentParser()
