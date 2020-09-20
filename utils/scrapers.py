@@ -141,7 +141,12 @@ class ElPaisScraper(NewspaperScraper):
     def get_date(self):
         str_date = self.soup.find("a", "a_ti").get_text()
         locale.setlocale(locale.LC_ALL, 'es_ES.utf8')
-        date = datetime.datetime.strptime(str_date[:6] + "." + str_date[6:], "%d %b %Y - %H:%M %Z")
+        try:
+            date = datetime.datetime.strptime(str_date[:6] + "." + str_date[6:], "%d %b %Y - %H:%M %Z")
+        except:
+            date = datetime.datetime.strptime(str_date, "%d %b %Y - %H:%M %Z")
+        else:
+            date = datetime.datetime.now()
         return date
 
 
