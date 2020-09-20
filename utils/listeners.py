@@ -42,21 +42,30 @@ class MyStreamListener(tweepy.StreamListener):
             tweetDict = status._json
             logging.info(f'Newspaper: {newspapers.get(newspaper)["name"]}')
             logging.info(f'Tweet: {tweetDict.get("text")}')
-            try:
-                if tweetDict.get("entities").get("urls"):
-                    url = tweetDict.get("entities").get("urls")[0].get("expanded_url")
-                    logging.info(url)
-                    if newspapers.get(newspaper)["baseURL"] in url: 
-                        scraper = get_scraper(newspaper, url)
-                        res = save_news(scraper)
-                        logging.info(res)
-                    else:
-                        logging.info("The url is not from the newspaper webpage")
-                else: 
-                    logging.info("There is not an URL in the tweet") 
-            except Exception as e:
-                logging.info("An exception occurred:") 
-                logging.info(e)
+            if tweetDict.get("text").startswith('RT '):
+                logging.info("The tweet is a self-retweet")
+            else: 
+                try:
+                    if tweetDict.get("entities").get("urls"):
+                        urls = tweetDict.get("entities").get("urls")
+                        url = urls[0].get("expanded_url")
+                        baseURL = newspapers.get(newspaper)["baseURL"]
+                        logging.info(f'URL: {url}')
+                        i = 1
+                        while i < len(urls) and not baseURL in url:
+                            url = urls[i].get("expanded_url")
+                            i += 1
+                        if baseURL in url: 
+                            scraper = get_scraper(newspaper, url)
+                            res = save_news(scraper)
+                            logging.info(res)
+                        else:
+                            logging.info("The url is not from the newspaper webpage")
+                    else: 
+                        logging.info("There is not an URL in the tweet") 
+                except Exception as e:
+                    logging.info("An exception occurred:") 
+                    logging.info(e)
 
 
 
