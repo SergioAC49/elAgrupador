@@ -51,13 +51,15 @@ class MyStreamListener(tweepy.StreamListener):
                     if tweetDict.get("entities").get("urls"):
                         urls = tweetDict.get("entities").get("urls")
                         url = urls[0].get("expanded_url")
+                        url = requests.get(url).url  # Unshort URL (eg 'bit.ly', 'elperiodi.co')
                         baseURL = newspapers.get(newspaper)["baseURL"]
-                        logging.info(f'URL: {url}')
                         i = 1
                         while i < len(urls) and not baseURL in url:
                             url = urls[i].get("expanded_url")
+                            url = requests.get(url).url  # Unshort URL (eg 'bit.ly', 'elperiodi.co')
                             i += 1
-                        if baseURL in url: 
+                        logging.info(f'URL: {url}')
+                        if baseURL in url:
                             scraper = get_scraper(newspaper, url)
                             res = save_news(scraper)
                             logging.info(res)

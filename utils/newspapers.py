@@ -1,7 +1,7 @@
 from utils.scrapers import *
 
 newspapers = {
-    "elperiodico": {"name": "El Periodico", "scrapper": ElPeriodicoScraper, "baseURL": "elperiodi.co", "twitterID": "198829810"},
+    "elperiodico": {"name": "El Periodico", "scrapper": ElPeriodicoScraper, "baseURL": "elperiodico.com", "twitterID": "198829810"},
     "lavanguardia": {"name": "La Vanguardia", "scrapper": LaVanguardiaScraper, "baseURL": "lavanguardia.com", "twitterID": "74453123"},
     "elpais": {"name": "El Pais", "scrapper": ElPaisScraper, "baseURL": "elpais.com", "twitterID": "7996082"},
     "elmundo": {"name": "El Mundo", "scrapper": ElMundoScraper, "baseURL": "elmundo.es", "twitterID": "962171952"},
