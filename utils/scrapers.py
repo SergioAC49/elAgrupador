@@ -100,8 +100,12 @@ class ElPeriodicoScraper(NewspaperScraper):
         return authors
 
     def get_date(self):
-        str_date = self.soup.find("span", "dateModified").get_text()
-        date = datetime.datetime.strptime(str_date, "%d/%m/%Y - %H:%M")
+        try:
+            str_date = self.soup.find("span", "dateModified").get_text()
+            date = datetime.datetime.strptime(str_date, "%d/%m/%Y - %H:%M")
+        except:
+            str_date = self.soup.find("time", "date").get_text()
+            date = datetime.datetime.strptime(str_date, "%Y-%m-%dT%H:%M:%S%z")
         return date
 
 
@@ -324,7 +328,11 @@ class OkDiarioScraper(NewspaperScraper):
         return self.soup.find("h1","entry-title").get_text()
 
     def get_subtitles(self):
-        return self.soup.find("div", "subtitles").find("h2").get_text()
+        try:
+            subtitles = self.soup.find("div", "subtitles").find("h2").get_text()
+        except:
+            subtitles = []
+        return subtitles
 
     def get_text(self):
         all_p = self.soup.find("div","entry-content").find_all("p")
