@@ -351,7 +351,12 @@ class PublicoScraper(NewspaperScraper):
         return "\n".join(p_text)
 
     def get_authors(self):
-        return self.soup.find("li", "author-name").get_text()
+        try:
+            self.soup.find("li", "author-name").get_text()
+        except:
+            self.soup.find("footer", "article-info").find("p", "signature").get_text()
+
+
 
     def get_date(self):
         str_date = self.soup.find("header", "article-published-info").find("span","published").get_text()
