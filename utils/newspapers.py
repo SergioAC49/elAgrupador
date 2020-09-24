@@ -11,3 +11,9 @@ newspapers = {
     "publico": {"name": "Publico", "scrapper": PublicoScraper, "baseURL": "publico.es", "twitterID": "17676713"}, 
     "test": {"name": "Test", "scrapper": ElDiarioScraper, "baseURL": "eldiario.es", "twitterID": "1305141713619619841"}
 }
+
+
+def get_newspaper_by_twitterID(id):
+    for n in newspapers:
+        if newspapers[n]['twitterID'] == id:
+            return n

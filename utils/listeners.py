@@ -6,7 +6,7 @@ from utils.elasticsearch_connector import save_news, print_all_news
 import time, logging
 import requests
 
-logging.basicConfig(level=logging.INFO, format='%(threadName)s: %(message)s')
+logging.basicConfig(level=logging.INFO, format='%(message)s')
 
 #Coloca dentro de las comillas tus claves...
 CONSUMER_KEY = 'ppEPCYun4gVJAQp8ZbLfmolHK' 
@@ -25,6 +25,7 @@ def get_scraper(newspaper, url):
     Scraper = newspapers.get(newspaper)["scrapper"]
     return Scraper(url)
 
+
 # Override tweepy.StreamListener to add logic to on_status
 class MyStreamListener(tweepy.StreamListener):
 
@@ -32,18 +33,23 @@ class MyStreamListener(tweepy.StreamListener):
         # Invoke StreamListener constructor
         tweepy.StreamListener.__init__(self)
         # New attributes
-        self.newspaper = newspaper
+        if newspaper != 'all':
+            self.twitter_ids = [newspapers[newspaper]["twitterID"]]
+        else:
+            self.twitter_ids = [newspapers[n]["twitterID"] for n in newspapers]
+
 
     def on_status(self, status):
-        logging.info("================ ID: {}".format(status.id))
-        # Test if the tweet is from the newspaper account
+        # logging.info("================ ID: {}".format(status.id))
+        # Test if the tweet is from a newspaper account
         # Discard RT and mentions from other users
-        newspaper = self.newspaper
-        if status.user.id == int(newspapers.get(newspaper)["twitterID"]):
+        if status.user.id_str in self.twitter_ids:
+            # Get name of newspaper
+            newspaper = get_newspaper_by_twitterID(status.user.id_str)
+            logging.info(f'Newspaper: {newspaper}')
             # Get extended tweet with extended text (it may have more urls)
             t = api.get_status(status.id, tweet_mode='extended')
             tweetDict = t._json
-            logging.info(f'Newspaper: {newspapers.get(newspaper)["name"]}')
             logging.info(f'Tweet: {tweetDict.get("full_text")}')
             if tweetDict.get("full_text").startswith('RT '):
                 logging.info("The tweet is a self-retweet")
@@ -75,11 +81,13 @@ class MyStreamListener(tweepy.StreamListener):
 
 
     def on_error(self, status_code):
+        logging.info("Error {}".format(status_code))
         if status_code == 420:
             #returning False in on_data disconnects the stream
             return False
 
     def my_start(self):
         myStream = tweepy.Stream(auth = api.auth, listener=self, )
-        myStream.filter(follow=[newspapers.get(self.newspaper)["twitterID"]], is_async=True)
+        myStream.filter(follow=self.twitter_ids, is_async=True)
+
 

@@ -93,7 +93,11 @@ class ElPeriodicoScraper(NewspaperScraper):
         return "\n".join(filtered_p)
 
     def get_authors(self):
-        return [self.soup.find("span", "author-link").get_text()]
+        try:
+            authors = [self.soup.find("span", "author-link").get_text()]
+        except:
+            authors = [self.soup.find("a", "author-link").get_text()]
+        return authors
 
     def get_date(self):
         str_date = self.soup.find("span", "dateModified").get_text()

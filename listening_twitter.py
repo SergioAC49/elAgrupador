@@ -9,10 +9,6 @@ import time, logging
 
 logging.basicConfig(level=logging.INFO, format='%(threadName)s: %(message)s')
 
-def activateListener(newspaper):
-    logging.info('Listener activated: {newspaper}')
-    listener = MyStreamListener(newspaper)
-    listener.my_start()
 
 if __name__ == '__main__':
     """
@@ -27,14 +23,8 @@ if __name__ == '__main__':
     args = parser.parse_args()
     newspaper = args.newspaper.lower()
 
-    if newspaper == "all": 
-        # Create the listener and start it for each newspaper
-        for n in newspapers.keys():
-            activateListener(n)
-    else:
-        # Create the listener and start it
-        listener = MyStreamListener(newspaper)
-        listener.my_start()
+    listener = MyStreamListener(newspaper)
+    listener.my_start()
 
     # Print all the news saved in elasticsearch (to check if we have saved them)
     #print_all_news()
