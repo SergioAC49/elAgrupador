@@ -34,15 +34,17 @@ class MyStreamListener(tweepy.StreamListener):
         self.newspaper = newspaper
 
     def on_status(self, status):
-        # logging.info("==========================================")
+        logging.info("================ ID: {}".format(status.id))
         # Test if the tweet is from the newspaper account
         # Discard RT and mentions from other users
         newspaper = self.newspaper
         if status.user.id == int(newspapers.get(newspaper)["twitterID"]):
-            tweetDict = status._json
+            # Get extended tweet with extended text (it may have more urls)
+            t = api.get_status(status.id, tweet_mode='extended')
+            tweetDict = t._json
             logging.info(f'Newspaper: {newspapers.get(newspaper)["name"]}')
-            logging.info(f'Tweet: {tweetDict.get("text")}')
-            if tweetDict.get("text").startswith('RT '):
+            logging.info(f'Tweet: {tweetDict.get("full_text")}')
+            if tweetDict.get("full_text").startswith('RT '):
                 logging.info("The tweet is a self-retweet")
             else: 
                 try:
@@ -75,6 +77,6 @@ class MyStreamListener(tweepy.StreamListener):
             return False
 
     def my_start(self):
-        myStream = tweepy.Stream(auth = api.auth, listener=self)
+        myStream = tweepy.Stream(auth = api.auth, listener=self, )
         myStream.filter(follow=[newspapers.get(self.newspaper)["twitterID"]], is_async=True)
 
