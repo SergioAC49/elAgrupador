@@ -4,6 +4,7 @@ from utils.scrapers import *
 from utils.elasticsearch_connector import save_news, print_all_news
 
 import time, logging
+import requests
 
 logging.basicConfig(level=logging.INFO, format='%(threadName)s: %(message)s')
 
