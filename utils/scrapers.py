@@ -212,8 +212,11 @@ class ABCScraper(NewspaperScraper):
         return "\n".join(p_text)
 
     def get_authors(self):
-        all_a = self.soup.find("footer", "autores").find_all("a", "nombre")
-        authors = [a.get_text() for a in all_a]
+        try:
+            all_a = self.soup.find("footer", "autores").find_all("a", "nombre")
+            authors = [a.get_text() for a in all_a]
+        except:
+            authors = []
         return authors
 
     def get_date(self):
