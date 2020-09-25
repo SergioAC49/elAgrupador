@@ -60,7 +60,7 @@ class NewspaperScraper:
         :return: Dictionary containing 'title', 'subtitles', 'text', 'authors' and 'date'
         """
         title = self.get_title()
-        # title_vector = title_to_vector(title)
+        title_vector = title_to_vector(title)
         d = {
             'newspaper': self.newspaper,
             'title': title,
@@ -68,7 +68,7 @@ class NewspaperScraper:
             'text': self.get_text(),
             'authors': self.get_authors(),
             'date': self.get_date().strftime("%Y-%m-%dT%H:%M:%S"),
-            # 'vector': title_vector
+            'vector': title_vector
         }
         return d
 

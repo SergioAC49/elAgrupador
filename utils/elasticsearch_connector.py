@@ -34,3 +34,26 @@ def print_all_news():
         print("url: " + doc['_id'])
         print(doc['_source'])
         print("__________________")
+
+
+def print_all_news_of_newspaper(newspaper):
+    """
+    Print all news of one newspaper
+    """
+    es = Elasticsearch(port=8890)
+    response = es.search(
+        index="news",
+        body={
+            'size': 10000,
+            'query': {
+                "bool": {
+                    "filter": [{"term":  {"newspaper": newspaper}}]
+                }
+            }
+        }
+    )
+    for doc in response['hits']['hits']:
+        print("url: " + doc['_id'])
+        print(doc['_source'])
+        print("__________________")
+
