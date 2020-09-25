@@ -5,6 +5,6 @@ def title_to_vector(news_title):
 	
 	#Compute embeddings
 	embeddings = model.encode(test_dataset, convert_to_tensor=True)
-  	title_vector = embeddings[0]
+  	title_vector = embeddings[0].tolist()
 	
 	return title_vector
