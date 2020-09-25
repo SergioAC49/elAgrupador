@@ -19,6 +19,7 @@ For now, in localhost:
         "subtitles": {"type": "text"},
         "text": {"type": "text"},
         "authors": {"type": "keyword"},
+        "timestamp": {"type": "date", "format": "yyyy-MM-dd'T'HH:mm:ss"},
         "date": {"type": "date", "format": "yyyy-MM-dd'T'HH:mm:ss"},
         "vector": {"type": "dense_vector", "dims": 512}
    }
