@@ -68,7 +68,8 @@ class NewspaperScraper:
             'text': self.get_text(),
             'authors': self.get_authors(),
             'date': self.get_date().strftime("%Y-%m-%dT%H:%M:%S"),
-            'vector': title_vector
+            'vector': title_vector,
+            'timestamp': datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S")
         }
         return d
 
