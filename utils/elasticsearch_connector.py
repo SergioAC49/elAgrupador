@@ -1,7 +1,7 @@
 from elasticsearch import Elasticsearch
 
 
-def save_news(scraper):
+def save_news(scraper, model):
     """
     Save one news in elasticsearch. The id is the url and the content
     is the dictionary returned by the scraper.
@@ -13,7 +13,7 @@ def save_news(scraper):
     response = es.index(
         index='news',
         id=scraper.url,
-        body=scraper.get_elasticsearch_dict()
+        body=scraper.get_elasticsearch_dict(model)
     )
     return response
 
