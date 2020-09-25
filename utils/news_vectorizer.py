@@ -1,7 +1,8 @@
 from sentence_transformers import SentenceTransformer, util
 
+model = SentenceTransformer('/home/bdma41/.cache/torch/sentence_transformers/sbert.net_models_distiluse-base-multilingual-cased')
+
 def title_to_vector(news_title):
-        model = SentenceTransformer('distiluse-base-multilingual-cased')
         #Compute embeddings
         news_title_list = [news_title]
         embeddings = model.encode(news_title_list, convert_to_tensor=True)
