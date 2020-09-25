@@ -14,11 +14,13 @@ For now, in localhost:
 - PUT to  `localhost:9200/news?pretty` (empty body: no configuration for now)
 - PUT to `localhost:9200/news/_mapping?pretty` the JSON `{
     "properties": {
+        "newspaper": {"type": "text"},
         "title": {"type": "text"},
         "subtitles": {"type": "text"},
         "text": {"type": "text"},
         "authors": {"type": "keyword"},
-        "date": {"type": "date", "format": "yyyy-MM-dd'T'HH:mm:ss"}
+        "date": {"type": "date", "format": "yyyy-MM-dd'T'HH:mm:ss"},
+        "vector": {"type": "dense_vector", "dims": 512}
    }
 }`
 
