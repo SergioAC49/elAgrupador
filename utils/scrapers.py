@@ -55,12 +55,12 @@ class NewspaperScraper:
         """
         raise Exception("Not Implemented")
 
-    def get_elasticsearch_dict(self):
+    def get_elasticsearch_dict(self, model):
         """
-        :return: Dictionary containing 'title', 'subtitles', 'text', 'authors' and 'date'
+        :return: Dictionary containing 'title', 'subtitles', 'text', 'authors', 'date' and 'vector'
         """
         title = self.get_title()
-        title_vector = title_to_vector(title)
+        title_vector = title_to_vector(title, model)
         d = {
             'newspaper': self.newspaper,
             'title': title,
