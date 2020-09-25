@@ -2,8 +2,8 @@ from sentence_transformers import SentenceTransformer, util
 
 def load_vectorizer_model():
         model = SentenceTransformer('/home/bdma41/.cache/torch/sentence_transformers/sbert.net_models_distiluse-base-multilingual-cased')
-
         return model
+
 
 def title_to_vector(news_title, model):
         #Compute embeddings

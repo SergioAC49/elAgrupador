@@ -24,7 +24,6 @@ api = tweepy.API(auth)
 #Load vectorizer model
 model = load_vectorizer_model()
 
-
 def get_scraper(newspaper, url):
     Scraper = newspapers.get(newspaper)["scrapper"]
     return Scraper(url)
