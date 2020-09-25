@@ -96,7 +96,10 @@ class ElPeriodicoScraper(NewspaperScraper):
         try:
             authors = [self.soup.find("span", "author-link").get_text()]
         except:
-            authors = [self.soup.find("a", "author-link").get_text()]
+            try:
+                authors = [self.soup.find("a", "author-link").get_text()]
+            except:
+                authors = []
         return authors
 
     def get_date(self):
@@ -104,7 +107,7 @@ class ElPeriodicoScraper(NewspaperScraper):
             str_date = self.soup.find("span", "dateModified").get_text()
             date = datetime.datetime.strptime(str_date, "%d/%m/%Y - %H:%M")
         except:
-            str_date = self.soup.find("time", "date").get_text()
+            str_date = self.soup.find("time", "date")['datetime']
             date = datetime.datetime.strptime(str_date, "%Y-%m-%dT%H:%M:%S%z")
         return date
 
@@ -255,7 +258,10 @@ class ElDiarioScraper(NewspaperScraper):
             all_a = self.soup.find("p", "authors").find_all("a")
             authors = [a.get_text() for a in all_a]
         except:
-            authors = self.soup.find("div", "author-pill-wrapper").find("div", "featured-data").get_text()
+            try:
+                authors = self.soup.find("div", "author-pill-wrapper").find("div", "featured-data").get_text()
+            except:
+                authors = []
         return authors
 
     def get_date(self):
