@@ -2,6 +2,7 @@ import tweepy, re, json, traceback
 from utils.newspapers import *
 from utils.scrapers import *
 from utils.elasticsearch_connector import save_news, print_all_news
+from utils.news_vectorizer import *
 
 import time, logging
 import requests
@@ -19,6 +20,9 @@ auth = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
 auth.set_access_token(ACCESS_KEY, ACCESS_SECRET)
 
 api = tweepy.API(auth)
+
+#Load vectorizer model
+model = load_vectorizer_model()
 
 
 def get_scraper(newspaper, url):
@@ -68,7 +72,7 @@ class MyStreamListener(tweepy.StreamListener):
                         logging.info(f'URL: {url}')
                         if baseURL in url:
                             scraper = get_scraper(newspaper, url)
-                            res = save_news(scraper)
+                            res = save_news(scraper, model)
                             logging.info(res)
                         else:
                             logging.info("The url is not from the newspaper webpage")
