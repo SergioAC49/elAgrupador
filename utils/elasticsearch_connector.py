@@ -57,3 +57,21 @@ def print_all_news_of_newspaper(newspaper):
         print(doc['_source'])
         print("__________________")
 
+
+def get_last_news(date):
+    """
+    Get all the news saved after 'date'
+    """
+    es = Elasticsearch(port=8890)
+    response = es.search(
+        index="news",
+        body={
+            'size': 10000,
+            'query': {
+                "range": {
+                    "timestamp": {"gt": date.strftime("%Y-%m-%dT%H:%M:%S")}
+                }
+            }
+        }
+    )
+    return response
