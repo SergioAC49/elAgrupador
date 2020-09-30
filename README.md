@@ -21,7 +21,8 @@ For now, in localhost:
         "authors": {"type": "keyword"},
         "timestamp": {"type": "date", "format": "yyyy-MM-dd'T'HH:mm:ss"},
         "date": {"type": "date", "format": "yyyy-MM-dd'T'HH:mm:ss"},
-        "vector": {"type": "dense_vector", "dims": 512}
+        "vector": {"type": "dense_vector", "dims": 512},
+        "picture_url": {"type": "picture_url"}
    }
 }`
 
