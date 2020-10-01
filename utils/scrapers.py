@@ -55,9 +55,15 @@ class NewspaperScraper:
         """
         raise Exception("Not Implemented")
 
+    def get_picture(self):
+        """
+        :return: String containing the picture url
+        """
+        raise Exception("Not Implemented")
+
     def get_elasticsearch_dict(self, model):
         """
-        :return: Dictionary containing 'title', 'subtitles', 'text', 'authors', 'date' and 'vector'
+        :return: Dictionary containing 'title', 'subtitles', 'text', 'authors' and 'date'
         """
         title = self.get_title()
         title_vector = title_to_vector(title, model)
@@ -69,7 +75,7 @@ class NewspaperScraper:
             'authors': self.get_authors(),
             'date': self.get_date().strftime("%Y-%m-%dT%H:%M:%S"),
             'vector': title_vector,
-            'timestamp': datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S")
+            'picture_url': self.get_picture_url()
         }
         return d
 
@@ -113,11 +119,15 @@ class ElPeriodicoScraper(NewspaperScraper):
             date = datetime.datetime.strptime(str_date, "%d/%m/%Y - %H:%M")
         except:
             str_date = self.soup.find("time", "date")['datetime']
-            try:
-                date = datetime.datetime.strptime(str_date, "%Y-%m-%dT%H:%M:%S%z")
-            except:
-                date = datetime.datetime.strptime(str_date, "%d/%m/%Y - %H:%M %Z")
+            date = datetime.datetime.strptime(str_date, "%Y-%m-%dT%H:%M:%S%z")
         return date
+
+    def get_picture_url(self):
+        try:
+            picture_url = self.soup.find(property="og:image")['content']
+        except:
+            picture_url = None
+        return picture_url
 
 
 class LaVanguardiaScraper(NewspaperScraper):
@@ -148,6 +158,13 @@ class LaVanguardiaScraper(NewspaperScraper):
         str_date = self.soup.find("time", "d-signature__time")['datetime']
         date = datetime.datetime.strptime(str_date, "%Y-%m-%dT%H:%M:%S%z")
         return date
+
+    def get_picture_url(self):
+        try:
+            picture_url = self.soup.find(property="og:image")['content']
+        except:
+            picture_url = None
+        return picture_url
 
 
 class ElPaisScraper(NewspaperScraper):
@@ -184,6 +201,13 @@ class ElPaisScraper(NewspaperScraper):
                 date = datetime.datetime.now()
         return date
 
+    def get_picture_url(self):
+        try:
+            picture_url = self.soup.find(property="og:image")['content']
+        except:
+            picture_url = None
+        return picture_url
+
 
 class ElMundoScraper(NewspaperScraper):
 
@@ -211,6 +235,13 @@ class ElMundoScraper(NewspaperScraper):
         str_date = self.soup.find("div", "ue-c-article__publishdate").find("time")['datetime']
         date = datetime.datetime.strptime(str_date, "%Y-%m-%dT%H:%M:%SZ")
         return date
+
+    def get_picture_url(self):
+        try:
+            picture_url = self.soup.find(property="og:image")['content']
+        except:
+            picture_url = None
+        return picture_url
 
 
 class ABCScraper(NewspaperScraper):
@@ -242,6 +273,13 @@ class ABCScraper(NewspaperScraper):
         str_date = self.soup.find("span", "fecha").find("time")['datetime']
         date = datetime.datetime.strptime(str_date, "%Y-%m-%dT%H:%M:%SZ")
         return date
+
+    def get_picture_url(self):
+        try:
+            picture_url = self.soup.find(property="og:image")['content']
+        except:
+            picture_url = None
+        return picture_url
 
 
 class ElDiarioScraper(NewspaperScraper):
@@ -278,6 +316,13 @@ class ElDiarioScraper(NewspaperScraper):
         date = datetime.datetime.strptime(str_date, "%d de %B de %Y - %H:%M h")
         return date
 
+    def get_picture_url(self):
+        try:
+            picture_url = self.soup.find(property="og:image")['content']
+        except:
+            picture_url = None
+        return picture_url
+
     
 class LaRazonScraper(NewspaperScraper):
 
@@ -303,6 +348,13 @@ class LaRazonScraper(NewspaperScraper):
         locale.setlocale(locale.LC_ALL, 'es_ES.utf8')
         date = datetime.datetime.strptime(str_date, "%d-%m-%Y | %H:%M H")
         return date
+
+    def get_picture_url(self):
+        try:
+            picture_url = self.soup.find(property="og:image")['content']
+        except:
+            picture_url = None
+        return picture_url
 
     
 class VeinteMinutosScraper(NewspaperScraper):
@@ -331,6 +383,13 @@ class VeinteMinutosScraper(NewspaperScraper):
         locale.setlocale(locale.LC_ALL, 'es_ES.utf8')
         date = datetime.datetime.strptime(str_date, "%d.%m.%Y - %H:%Mh")
         return date
+
+    def get_picture_url(self):
+        try:
+            picture_url = self.soup.find(property="og:image")['content']
+        except:
+            picture_url = None
+        return picture_url
 
     
 class OkDiarioScraper(NewspaperScraper):
@@ -362,6 +421,13 @@ class OkDiarioScraper(NewspaperScraper):
         date = datetime.datetime.strptime(str_date, "%d/%m/%Y %H:%M")
         return date
 
+    def get_picture_url(self):
+        try:
+            picture_url = self.soup.find(property="og:image")['content']
+        except:
+            picture_url = None
+        return picture_url
+
     
 class PublicoScraper(NewspaperScraper):
 
@@ -392,3 +458,10 @@ class PublicoScraper(NewspaperScraper):
         locale.setlocale(locale.LC_ALL, 'es_ES.utf8')
         date = datetime.datetime.strptime(str_date, "%d/%m/%Y %H:%M")
         return date
+
+    def get_picture_url(self):
+        try:
+            picture_url = self.soup.find(property="og:image")['content']
+        except:
+            picture_url = None
+        return picture_url
