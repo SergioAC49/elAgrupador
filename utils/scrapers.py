@@ -76,6 +76,7 @@ class NewspaperScraper:
             'authors': self.get_authors(),
             'date': self.get_date().strftime("%Y-%m-%dT%H:%M:%S"),
             'vector': title_vector,
+            'timestamp': datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S"),
             'picture_url': self.get_picture_url()
         }
         return d
@@ -120,7 +121,10 @@ class ElPeriodicoScraper(NewspaperScraper):
             date = datetime.datetime.strptime(str_date, "%d/%m/%Y - %H:%M")
         except:
             str_date = self.soup.find("time", "date")['datetime']
-            date = datetime.datetime.strptime(str_date, "%Y-%m-%dT%H:%M:%S%z")
+            try:
+                date = datetime.datetime.strptime(str_date, "%Y-%m-%dT%H:%M:%S%z")
+            except:
+                date = datetime.datetime.strptime(str_date, "%d/%m/%Y - %H:%M %Z")
         return date
 
     def get_picture_url(self):
