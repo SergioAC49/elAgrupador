@@ -9,9 +9,9 @@ class Neo4jConnector:
     def close(self):
         self.driver.close()
 
-    def create_news(self, url, title, vector, newspaper):
+    def create_news(self, url, title, vector, newspaper, picture_url):
         with self.driver.session() as session:
-            news = session.write_transaction(self._create_and_return_news, url, title, vector, newspaper)
+            news = session.write_transaction(self._create_and_return_news, url, title, vector, newspaper, picture_url)
             print("Created news {}".format(news))
 
     def create_similarity_relation(self, url1, url2, similarity):
@@ -24,9 +24,10 @@ class Neo4jConnector:
             return session.read_transaction(self._get_cos_similarities_and_return, url)
 
     @staticmethod
-    def _create_and_return_news(tx, url, title, vector, newspaper):
+    def _create_and_return_news(tx, url, title, vector, newspaper, picture_url):
         news = tx.run(
-            "MERGE (n:News { url: '"+url+"', title: '"+title.replace("'", '"')+"', vector: "+str(vector)+" })"
+            "MERGE (n:News { url: '"+url+"', title: '"+title.replace("'", '"')+"', "
+            "vector: "+str(vector)+", picture_url: '"+picture_url + "' })"
             "MERGE (np:Newspaper { name: '"+newspaper+"' })"
             "MERGE (n) -[:newspaper]-> (np)"
             "RETURN n.url AS url"

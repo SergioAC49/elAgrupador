@@ -5,6 +5,7 @@ from bs4 import BeautifulSoup
 
 from utils.news_vectorizer import *
 
+
 class NewspaperScraper:
 
     def __init__(self, url, newspaper):
@@ -55,7 +56,7 @@ class NewspaperScraper:
         """
         raise Exception("Not Implemented")
 
-    def get_picture(self):
+    def get_picture_url(self):
         """
         :return: String containing the picture url
         """

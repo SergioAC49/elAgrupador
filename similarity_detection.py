@@ -29,9 +29,10 @@ if __name__ == "__main__":
             title = news['_source']['title']
             vector = news['_source']['vector']
             timestamp = news['_source']['timestamp']
+            picture_url = news['_source']['picture_url']
 
             # Create news
-            n4_con.create_news(url, title, vector, newspaper)
+            n4_con.create_news(url, title, vector, newspaper, picture_url)
 
             # Compute cosine similarity
             similarities = n4_con.get_cos_similarities(url)
