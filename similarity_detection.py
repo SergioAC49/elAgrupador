@@ -30,16 +30,19 @@ if __name__ == "__main__":
             vector = news['_source']['vector']
             timestamp = news['_source']['timestamp']
             picture_url = news['_source']['picture_url']
+            try:
+                # Create news
+                n4_con.create_news(url, title, vector, newspaper, picture_url, timestamp)
 
-            # Create news
-            n4_con.create_news(url, title, vector, newspaper, picture_url)
-
-            # Compute cosine similarity
-            similarities = n4_con.get_cos_similarities(url)
-            for s in similarities:
-                if s['similarity'] > 0.5 and s['url'] != url:
-                    n4_con.create_similarity_relation(url, s['url'], s['similarity'])
-
+                # Compute cosine similarity for the last 24 hours
+                d = datetime.datetime.strptime(timestamp, "%Y-%m-%dT%H:%M:%S") - datetime.timedelta(days=1)
+                similarities = n4_con.get_cos_similarities(url, d.strftime("%Y-%m-%dT%H:%M:%S"))
+                # Create relation if similarity is bigger than 0.6 and less than 1 (exactly same news)
+                for s in similarities:
+                    if 0.6 < s['similarity'] < 1:
+                        n4_con.create_similarity_relation(url, s['url'], s['similarity'])
+            except Exception as e:
+                print(e)
             # Write last processed timestamp
             with open(path_journal, 'w') as file:
                 file.write(timestamp)

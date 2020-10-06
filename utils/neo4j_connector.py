@@ -9,9 +9,10 @@ class Neo4jConnector:
     def close(self):
         self.driver.close()
 
-    def create_news(self, url, title, vector, newspaper, picture_url):
+    def create_news(self, url, title, vector, newspaper, picture_url, timestamp):
         with self.driver.session() as session:
-            news = session.write_transaction(self._create_and_return_news, url, title, vector, newspaper, picture_url)
+            news = session.write_transaction(self._create_and_return_news,
+                                             url, title, vector, newspaper, picture_url, timestamp)
             print("Created news {}".format(news))
 
     def create_similarity_relation(self, url1, url2, similarity):
@@ -19,15 +20,16 @@ class Neo4jConnector:
             relation = session.write_transaction(self._create_and_return_similarity, url1, url2, similarity)
             print("Created relation ({})-[{}]-({})".format(relation[0]['url'], relation[1], relation[2]['url']))
 
-    def get_cos_similarities(self, url):
+    def get_cos_similarities(self, url, timestamp):
         with self.driver.session() as session:
-            return session.read_transaction(self._get_cos_similarities_and_return, url)
+            return session.read_transaction(self._get_cos_similarities_and_return, url, timestamp)
 
     @staticmethod
-    def _create_and_return_news(tx, url, title, vector, newspaper, picture_url):
+    def _create_and_return_news(tx, url, title, vector, newspaper, picture_url, timestamp):
         news = tx.run(
             "MERGE (n:News { url: '"+url+"', title: '"+title.replace("'", '"')+"', "
-            "vector: "+str(vector)+", picture_url: '"+picture_url + "' })"
+            "vector: "+str(vector)+", picture_url: '"+picture_url + "', "
+            "timestamp: datetime('"+timestamp+"') })"
             "MERGE (np:Newspaper { name: '"+newspaper+"' })"
             "MERGE (n) -[:newspaper]-> (np)"
             "RETURN n.url AS url"
@@ -45,10 +47,11 @@ class Neo4jConnector:
         return news.single()
 
     @staticmethod
-    def _get_cos_similarities_and_return(tx, url):
+    def _get_cos_similarities_and_return(tx, url, timestamp):
         result = tx.run(
             "MATCH (p1:News {url:\""+url+"\"})"
             "MATCH (p2:News)"
+            "WHERE p2.timestamp > datetime('"+timestamp+"')"
             "RETURN p2.url AS url, gds.alpha.similarity.cosine(p1.vector, p2.vector) AS similarity"
         )
         return [{"url": record["url"], "similarity": record["similarity"]} for record in result]
