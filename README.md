@@ -22,7 +22,7 @@ For now, in localhost:
         "timestamp": {"type": "date", "format": "yyyy-MM-dd'T'HH:mm:ss"},
         "date": {"type": "date", "format": "yyyy-MM-dd'T'HH:mm:ss"},
         "vector": {"type": "dense_vector", "dims": 512},
-        "picture_url": {"type": "picture_url"}
+        "picture_url": {"type": "text"}
    }
 }`
 
