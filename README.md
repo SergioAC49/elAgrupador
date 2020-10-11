@@ -26,6 +26,12 @@ For now, in localhost:
    }
 }`
 
+# Server ports
+ - **ssh**: cluster-rdlab.cs.upc.edu:50411 -> node791:22
+ - **ElasticSearch**: cluster-rdlab.cs.upc.edu:50418 -> node791:8890
+ - **Neo4j** (web): http://cluster-rdlab.cs.upc.edu:50417/browser/ -> node791:7474
+ - **Neo4j** (bolt): bolt://cluster-rdlab.cs.upc.edu:50415 -> node791:50070
+ - **API**: http://cluster-rdlab.cs.upc.edu:50416/ -> node791:8080
 # Authors
 
 - Sergio Alonso Cañadas

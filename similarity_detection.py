@@ -13,7 +13,7 @@ if __name__ == "__main__":
     path_journal = args.path_journal
 
     # Get neo4j connector
-    n4_con = Neo4jConnector("bolt://localhost:7687", "neo4j", "pass.123")
+    n4_con = Neo4jConnector("bolt://localhost:50070", "neo4j", "pass.123")
 
     while True:
         # Read last processed timestamp
