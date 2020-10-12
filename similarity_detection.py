@@ -39,7 +39,7 @@ if __name__ == "__main__":
                 similarities = n4_con.get_cos_similarities(url, d.strftime("%Y-%m-%dT%H:%M:%S"))
                 # Create relation if similarity is bigger than 0.6 and less than 1 (exactly same news)
                 for s in similarities:
-                    if 0.6 < s['similarity'] < 1:
+                    if 0.6 < s['similarity'] < 1 and s['url'] != url:
                         n4_con.create_similarity_relation(url, s['url'], s['similarity'])
             except Exception as e:
                 print(e)

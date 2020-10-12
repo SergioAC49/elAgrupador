@@ -1,3 +1,4 @@
+import datetime
 from neo4j import GraphDatabase
 
 
@@ -23,6 +24,11 @@ class Neo4jConnector:
     def get_cos_similarities(self, url, timestamp):
         with self.driver.session() as session:
             return session.read_transaction(self._get_cos_similarities_and_return, url, timestamp)
+
+    def get_main_page_news(self):
+        one_day_ago = datetime.datetime.now() - datetime.timedelta(days=1)
+        with self.driver.session() as session:
+            return session.read_transaction(self._get_main_page_news, one_day_ago.strftime("%Y-%m-%dT%H:%M:%S"))
 
     @staticmethod
     def _create_and_return_news(tx, url, title, vector, newspaper, picture_url, timestamp):
@@ -55,3 +61,14 @@ class Neo4jConnector:
             "RETURN p2.url AS url, gds.alpha.similarity.cosine(p1.vector, p2.vector) AS similarity"
         )
         return [{"url": record["url"], "similarity": record["similarity"]} for record in result]
+
+    @staticmethod
+    def _get_main_page_news(tx, timestamp):
+        result = tx.run(
+            "MATCH (n:News)-[r]->() WITH n, COUNT(r) AS n_rel, COLLECT(r) AS relations "
+            "WHERE n.timestamp > datetime('"+timestamp+"')  AND n_rel > 2 "
+            "WITH n.url AS news_url, n_rel, [x IN relations | endnode(x).url] AS rel_news "
+            "RETURN news_url, n_rel, rel_news "
+            "ORDER BY n_rel DESC;"
+        )
+        return [{"url": record[0], "rel_news": record[2]} for record in result]
