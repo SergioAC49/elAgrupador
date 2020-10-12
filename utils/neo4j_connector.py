@@ -67,8 +67,8 @@ class Neo4jConnector:
         result = tx.run(
             "MATCH (n:News)-[r]->() WITH n, COUNT(r) AS n_rel, COLLECT(r) AS relations "
             "WHERE n.timestamp > datetime('"+timestamp+"')  AND n_rel > 2 "
-            "WITH n.url AS news_url, n_rel, [x IN relations | endnode(x).url] AS rel_news "
-            "RETURN news_url, n_rel, rel_news "
-            "ORDER BY n_rel DESC;"
+            "WITH n, n_rel, [x IN relations | endnode(x).url] AS rel_news "
+            "ORDER BY n.timestamp DESC "
+            "RETURN n.url AS news_url, n_rel, rel_news;"
         )
         return [{"url": record[0], "rel_news": record[2]} for record in result]
