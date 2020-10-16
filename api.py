@@ -6,7 +6,7 @@ from utils import elasticsearch_connector as es_con
 app = Flask(__name__)
 
 
-@app.route('/')
+@app.route('/news/latest/')
 def hello_world():
     n4_con = Neo4jConnector("bolt://localhost:50070", "neo4j", "pass.123")
     main_pages = n4_con.get_main_page_news()
@@ -24,6 +24,22 @@ def hello_world():
             if len(tmp_news) > 2:
                 news.append(tmp_news)
     return json.dumps(news)
+
+@app.route('/news/search/')
+def search_news():
+    return 'Not implemented!'
+
+@app.route('/news/category/')
+def category_news():
+    return 'Not implemented!'
+
+@app.route('/news/<id>/')
+def get_news():
+    return 'Not implemented!'
+
+@app.route('/news/<int:id>/similar/')
+def similar_news(id):
+    return 'Not implemented!'
 
 
 if __name__ == '__main__':
