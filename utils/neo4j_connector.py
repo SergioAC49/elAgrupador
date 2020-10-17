@@ -25,10 +25,18 @@ class Neo4jConnector:
         with self.driver.session() as session:
             return session.read_transaction(self._get_cos_similarities_and_return, url, timestamp)
 
-    def get_main_page_news(self):
+    def get_list_similar_news(self):
         one_day_ago = datetime.datetime.now() - datetime.timedelta(days=1)
         with self.driver.session() as session:
-            return session.read_transaction(self._get_main_page_news, one_day_ago.strftime("%Y-%m-%dT%H:%M:%S"))
+            return session.read_transaction(self._get_list_similar_news, one_day_ago.strftime("%Y-%m-%dT%H:%M:%S"))
+
+    def get_one_news(self, id):
+        with self.driver.session() as session:
+            return session.read_transaction(self._get_one_news, id)
+
+    def get_one_news_similar(self, id):
+        with self.driver.session() as session:
+            return session.read_transaction(self._get_one_news_similar, id)
 
     @staticmethod
     def _create_and_return_news(tx, url, title, vector, newspaper, picture_url, timestamp):
@@ -63,13 +71,76 @@ class Neo4jConnector:
         return [{"url": record["url"], "similarity": record["similarity"]} for record in result]
 
     @staticmethod
-    def _get_main_page_news(tx, timestamp):
+    def _get_list_similar_news(tx, timestamp):
         result = tx.run(
             "MATCH (n:News)-[r:similar]->() WITH n, COUNT(r) AS n_rel, COLLECT(r) AS relations "
             "WHERE n.timestamp > datetime('"+timestamp+"')  AND n_rel > 2 "
-            "WITH n {.url, .title, .picture_url, .newspaper}, [x IN relations | endnode(x)] AS rel_news "
-            "WITH n, [x IN rel_news | x {.url, .title, .picture_url, .newspaper}] AS rel_news "
+            "WITH "
+            "    n,"
+            "    [x IN relations | endnode(x)] AS rel_nodes "
+            "WITH "
+            "    n, "
+            "    [x IN rel_nodes | ID(x)] AS rel_ids, "
+            "    [x IN rel_nodes | x {.url, .title, .picture_url, .newspaper}] AS rel_news "
             "ORDER BY n.timestamp DESC "
-            "RETURN n, rel_news;"
+            "RETURN n {.url, .title, .picture_url, .newspaper}, ID(n), rel_news, rel_ids;"
         )
-        return [{"rel_news": [record[0]]+record[1]} for record in result]
+
+        similar_news = []
+        for record in result:
+            aux_list = []
+            # Get news info and add id to it
+            n = record[0]
+            n['id'] = record[1]
+            aux_list.append(n)
+
+            # Loop for rel_news and rel_ids
+            for i in range(0, len(record[2])):
+                # Get news info and add id to it
+                n = record[2][i]
+                n['id'] = record[3][i]
+                aux_list.append(n)
+
+            similar_news.append(aux_list)
+
+        return similar_news
+
+    @staticmethod
+    def _get_one_news_similar(tx, id):
+        result = tx.run(
+            "MATCH (n:News)-[r:similar]->() WITH n, COUNT(r) AS n_rel, COLLECT(r) AS relations  "
+            "WHERE ID(n) = "+str(id)+" "
+            "WITH "
+            "    n,"
+            "    [x IN relations | endnode(x)] AS rel_nodes "
+            "WITH "
+            "    n, "
+            "    [x IN rel_nodes | ID(x)] AS rel_ids, "
+            "    [x IN rel_nodes | x {.url, .title, .picture_url, .newspaper}] AS rel_news "
+            "RETURN n {.url, .title, .picture_url, .newspaper}, ID(n), rel_news, rel_ids;"
+        )
+        record = result.single()
+
+        news = record[0]
+        news['id'] = record[1]
+
+        news['similar'] = []
+        for i in range(0, len(record[2])):
+            # Get similar news info and add id to it
+            n = record[2][i]
+            n['id'] = record[3][i]
+            news['similar'].append(n)
+
+        return news
+
+    @staticmethod
+    def _get_one_news(tx, id):
+        result = tx.run(
+            "MATCH (n:News) "
+            "WHERE ID(n) = "+str(id)+" "
+            "RETURN n {.url, .title, .picture_url, .newspaper}, ID(n);"
+        )
+        record = result.single()
+        news = record[0]
+        news['id'] = record[1]
+        return news

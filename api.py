@@ -14,15 +14,15 @@ def latest_news():
 
     # Make query
     n4_con = Neo4jConnector("bolt://localhost:50070", "neo4j", "pass.123")
-    main_page = n4_con.get_main_page_news()
+    similar_news = n4_con.get_list_similar_news()
     n4_con.close()
 
     # Process query
-    for related_news in main_page:
+    for related_news in similar_news:
         # Create list with the related news that hasn't been added before
         list_news = []
         list_urls = []
-        for n in related_news['rel_news']:
+        for n in related_news:
             if n['url'] not in (added_urls or list_urls):
                 list_news.append(n)
                 list_urls.append(n['url'])
@@ -46,13 +46,20 @@ def category_news():
 
 @app.route('/news/<int:id>/')
 def get_news(id):
-    return 'Not implemented!'
+    n4_con = Neo4jConnector("bolt://localhost:50070", "neo4j", "pass.123")
+    news = n4_con.get_one_news(id)
+    n4_con.close()
+
+    return json.dumps(news)
 
 
 @app.route('/news/<int:id>/similar/')
 def similar_news(id):
-    return 'Not implemented!'
+    n4_con = Neo4jConnector("bolt://localhost:50070", "neo4j", "pass.123")
+    news = n4_con.get_one_news_similar(id)
+    n4_con.close()
 
+    return json.dumps(news)
 
 if __name__ == '__main__':
   app.run(host='0.0.0.0', port=8080)
