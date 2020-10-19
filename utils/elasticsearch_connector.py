@@ -9,7 +9,7 @@ def save_news(scraper, model):
     :param scraper: NewspaperScraper object
     :return: Elasticsearch response after indexing the news
     """
-    es = Elasticsearch(port=8890)  # TODO: change configuration when we start using the cluster
+    es = Elasticsearch(port=8890)
     response = es.index(
         index='news',
         id=scraper.url,
@@ -73,5 +73,26 @@ def get_last_news(date):
                 }
             }
         }
+    )
+    return response
+
+
+def filter_news(words):
+    """
+    Filter news
+    """
+    es = Elasticsearch(port=8890)
+    response = es.search(
+        index="news",
+        body={
+            'size': 50,
+            '_source': ['title', 'picture_url', 'newspaper'],
+            'query': {
+                "bool": {
+                    "must": [{"match":  {"text": words}}]
+                }
+            }
+        },
+        request_timeout=30
     )
     return response

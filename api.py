@@ -1,5 +1,6 @@
 import json
 from flask import Flask
+from flask import request
 from utils.neo4j_connector import Neo4jConnector
 from utils import elasticsearch_connector as es_con
 
@@ -34,9 +35,22 @@ def latest_news():
     return json.dumps(news)
 
 
-@app.route('/news/search/')
+@app.route('/news/search/', methods=['POST'])
 def search_news():
-    return 'Not implemented!'
+    """
+    Inputs:
+    Form containing the key 'words' and as value a string with all the words to filter
+
+    Outputs:
+    list of hits (max 50 hits):
+     - url: "_id"
+     - newspaper: "_source.newspaper"
+     - picture_url: "_source.picture_url"
+     - title: "_source.title"
+    """
+    words = request.form['words']
+    news = es_con.filter_news(words)
+    return json.dumps(news['hits']['hits'])
 
 
 @app.route('/news/category/')
@@ -60,6 +74,7 @@ def similar_news(id):
     n4_con.close()
 
     return json.dumps(news)
+
 
 if __name__ == '__main__':
   app.run(host='0.0.0.0', port=8080)
