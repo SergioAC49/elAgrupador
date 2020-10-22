@@ -41,9 +41,12 @@ class Neo4jConnector:
     @staticmethod
     def _create_and_return_news(tx, url, title, vector, newspaper, picture_url, timestamp):
         news = tx.run(
-            "MERGE (n:News { url: '"+url+"', title: '"+title.replace("'", '"')+"', "
-            "vector: "+str(vector)+", picture_url: '"+picture_url + "', "
-            "timestamp: datetime('"+timestamp+"'), newspaper: '"+newspaper+"' })"
+            "MERGE (n:News { url: '"+url+"'})"
+            "SET n.title  = '" + title.replace("'", '"') + "' "
+            "SET n.vector = " + str(vector) + " "
+            "SET n.picture_url = '" + picture_url + "' "
+            "SET n.timestamp = datetime('"+timestamp+"') "
+            "SET n.newspaper = '"+newspaper+"' "
             "MERGE (np:Newspaper { name: '"+newspaper+"' })"
             "MERGE (n) -[:newspaper]-> (np)"
             "RETURN n.url AS url"
@@ -55,7 +58,8 @@ class Neo4jConnector:
         news = tx.run(
             "MATCH (n1:News), (n2:News)"
             "WHERE n1.url = '"+url1+"' AND n2.url = '"+url2+"'"
-            "MERGE (n1)-[s:similar { num: "+str(similarity)+"}]-(n2)"
+            "MERGE (n1)-[s:similar]-(n2)"
+            "SET s.num = " + str(similarity) + " "
             "RETURN n1, s.num AS sim, n2"
         )
         return news.single()
