@@ -1,0 +1,22 @@
+.news-card {
+  max-width: 80%;
+  /*align-self: center;*/
+  margin: 15px;
+}
+
+.header-title-link {
+    font-family: "TiemposHeadline-Medium",serif;
+    font-size: 10px;
+    font-size: 1.210em;
+    text-decoration: none;
+}
+
+a {
+    color: #000;
+    cursor: pointer;
+}
+
+mat-card img {
+  object-fit: cover; /*this makes the image in src fit to the size specified below*/
+  height: 250px;
+}

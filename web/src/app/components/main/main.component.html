@@ -1,0 +1,19 @@
+<app-header></app-header>
+<div class="main" style="margin:auto;">
+	<mat-grid-list cols="1" rowHeight="1:1" height="360px">
+		<mat-grid-tile *ngFor="let item of news | slice:0:1">
+			<app-news-big [news]="item"></app-news-big>
+		</mat-grid-tile>
+	</mat-grid-list>
+	<mat-grid-list cols="3" rowHeight="3:3">
+		<mat-grid-tile *ngFor="let item of news | slice:1:4">
+			<app-news-medium [news]="item"></app-news-medium>
+		</mat-grid-tile>
+	</mat-grid-list>
+	<mat-grid-list cols="4" rowHeight="4:4">
+		<mat-grid-tile *ngFor="let item of news | slice:4">
+			<app-news-small [news]="item"></app-news-small>
+		</mat-grid-tile>
+	</mat-grid-list>
+</div>
+

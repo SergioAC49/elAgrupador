@@ -1,0 +1,36 @@
+.navbar{
+    height: 70px;
+    background-color:#a4302b;
+}
+.navbar-items{
+    padding: 5px 50px;
+}
+.left{
+    font-family: sans-serif;
+    font-weight: bold;
+    color: #ffffff;
+    width: fit-content;
+    display: inline-block;
+}
+.large{
+    font-size: 40px;
+    width: fit-content;
+    padding: 10px;
+    margin-left: 250px;
+}
+.right{
+    float: right;
+    padding-top: inherit;
+}
+button{
+    color: red;
+
+}
+.example-spacer {
+  flex: 1 1 auto;
+}
+.logo {
+    position: absolute; 
+    height: 200px;
+    margin-top: 50px; 
+}
