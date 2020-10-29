@@ -440,7 +440,7 @@ class PublicoScraper(NewspaperScraper):
         super().__init__(url, "Publico")
 
     def get_title(self):
-        return self.soup.find("div","title").find("a").get_text()
+        return self.soup.find("h1").get_text()
 
     def get_subtitles(self):
         return self.soup.find("div", "article-header-epigraph col-12").find("h2").get_text()
