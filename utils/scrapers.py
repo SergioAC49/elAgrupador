@@ -91,8 +91,12 @@ class ElPeriodicoScraper(NewspaperScraper):
         return self.soup.find("h1", "title").get_text()
 
     def get_subtitles(self):
-        subtitles = self.soup.find("div", "subtitle").find_all("h2")
-        return [h2.get_text() for h2 in subtitles]
+        try:
+            s = self.soup.find("div", "subtitle").find_all("h2")
+            subtitles = [h2.get_text() for h2 in s]
+        except:
+            subtitles = []
+        return subtitles
 
     def get_text(self):
         all_p = self.soup.find("div", "ep-detail-body").find_all("p")
