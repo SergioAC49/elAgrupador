@@ -7,9 +7,10 @@ newspapers = {
     "elmundo": {"name": "El Mundo", "scrapper": ElMundoScraper, "baseURL": "elmundo.es", "twitterID": "14436030"},
     "abc": {"name": "ABC", "scrapper": ABCScraper, "baseURL": "abc.es", "twitterID": "19923515"}, 
     "eldiario": {"name": "eldiario.es", "scrapper": ElDiarioScraper, "baseURL": "eldiario.es", "twitterID": "535707261"},
-    "okdiario": {"name": "okdiario", "scrapper": OkDiarioScraper, "baseURL": "okdiario.com", "twitterID": "3439292716"}, 
-    "publico": {"name": "Publico", "scrapper": PublicoScraper, "baseURL": "publico.es", "twitterID": "17676713"}, 
-    "test": {"name": "Test", "scrapper": ElDiarioScraper, "baseURL": "eldiario.es", "twitterID": "1305141713619619841"}
+    "larazon": {"name": "La Razon", "scrapper": LaRazonScraper, "baseURL": "larazon.es", "twitterID": "112694236"},
+    "20minutos": {"name": "20 minutos", "scrapper": VeinteMinutosScraper, "baseURL": "20minutos.es", "twitterID": "31090827"},
+    "okdiario": {"name": "okdiario", "scrapper": OkDiarioScraper, "baseURL": "okdiario.com", "twitterID": "3439292716"},
+    "publico": {"name": "Publico", "scrapper": PublicoScraper, "baseURL": "publico.es", "twitterID": "17676713"},
 }
 
 
