@@ -1,9 +1,0 @@
-.main {
-  margin-top: 30px; /* Add a top margin to avoid content overlay */
-}
-app-header {	
-    overflow: hidden;
-    position: fixed; 
-    top: 0; 
-    width: 100%;
-}

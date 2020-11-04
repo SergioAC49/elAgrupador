@@ -1,0 +1,23 @@
+.header-title-link {
+    font-family: "TiemposHeadline-Medium",serif;
+    font-size: 10px;
+    font-size: 1.563em;
+    text-decoration: none;
+} 
+
+a {
+    color: #000;
+    cursor: pointer;
+}
+
+li {
+    list-style-type: none;
+}
+
+.example-header-image {
+  background-size: cover;
+}
+
+.example-card {
+	margin-left: 20px;
+}

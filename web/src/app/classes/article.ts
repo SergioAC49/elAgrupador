@@ -8,4 +8,5 @@ export interface Article {
 	date: string;
 	author: string;
 	url: string;
+	similar: Article[];
 }

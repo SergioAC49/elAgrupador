@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-header',
@@ -7,9 +8,19 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HeaderComponent implements OnInit {
 
-  constructor() { }
+	control: FormControl = new FormControl('');
 
-  ngOnInit(): void {
-  }
+	constructor() {
+		this.control.valueChanges
+			.subscribe(value => {
+				console.log(value);
+			});
+	}
+
+	ngOnInit(): void { }
+
+	search(value: string) {
+		console.log("Search: ", value);
+	}
 
 }

@@ -1,19 +1,24 @@
-<app-header></app-header>
-<div class="main" style="margin:auto;">
-	<mat-grid-list cols="1" rowHeight="1:1" height="360px">
-		<mat-grid-tile *ngFor="let item of news | slice:0:1">
-			<app-news-big [news]="item"></app-news-big>
-		</mat-grid-tile>
-	</mat-grid-list>
-	<mat-grid-list cols="3" rowHeight="3:3">
-		<mat-grid-tile *ngFor="let item of news | slice:1:4">
-			<app-news-medium [news]="item"></app-news-medium>
-		</mat-grid-tile>
-	</mat-grid-list>
-	<mat-grid-list cols="4" rowHeight="4:4">
-		<mat-grid-tile *ngFor="let item of news | slice:4">
+<div *ngIf="isMobile; then thenBlock else elseBlock"></div>
+<ng-template #thenBlock>
+	<mat-grid-list class="mobile" [cols]="1" rowHeight="360px">
+		<mat-grid-tile class="mobile" [rowspan]="1" [colspan]="1" *ngFor="let item of news">
 			<app-news-small [news]="item"></app-news-small>
 		</mat-grid-tile>
 	</mat-grid-list>
-</div>
+</ng-template>
+<ng-template #elseBlock>
+	<mat-grid-list class="desktop" [cols]="4" rowHeight="360px" [gutterSize]="'60px'">
+		<mat-grid-tile class="desktop" [rowspan]="2" [colspan]="4" *ngFor="let item of news | slice:0:1">
+			<app-news-big class="news-component" [news]="item"></app-news-big>
+		</mat-grid-tile>
+		<mat-grid-tile [rowspan]="2" [colspan]="2" *ngFor="let item of news | slice:1:5">
+			<app-news-medium class="news-component" [news]="item"></app-news-medium>
+		</mat-grid-tile>
+		<mat-grid-tile [rowspan]="1" [colspan]="1" *ngFor="let item of news | slice:5">
+			<app-news-small class="news-component" [news]="item"></app-news-small>
+		</mat-grid-tile>
+	</mat-grid-list>	
+</ng-template>
+
+
 

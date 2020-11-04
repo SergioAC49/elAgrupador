@@ -15,8 +15,8 @@ export class SearchResultComponent implements OnInit {
 	constructor(public service: NewsService) {
 
 	    this.service.getNews().subscribe(data => {
-	    	console.log(data);
 	    	this.news = data[0];
+	    	console.log(this.news);
 	    });
 	}
 

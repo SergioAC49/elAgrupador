@@ -1,8 +1,4 @@
-<app-header></app-header>
-<div class="main" style="margin:auto;">
-	<mat-grid-list cols="1" rowHeight="1:1">
-		<mat-grid-tile *ngFor="let item of news">
-			<app-article-details [news]="item"></app-article-details>
-		</mat-grid-tile>
-	</mat-grid-list>
+<div class="search-result">
+	<h2 class="title">Resultados de la búsqueda:</h2>
+	<app-similar-news [articles]="news"></app-similar-news>
 </div>
