@@ -70,9 +70,9 @@ class Neo4jConnector:
             "MATCH (p1:News {url:\""+url+"\"}) "
             "MATCH (p2:News) "
             "WHERE p2.timestamp > datetime('"+timestamp+"') AND p2.newspaper <> p1.newspaper "
-            "RETURN p2.url AS url, gds.alpha.similarity.cosine(p1.vector, p2.vector) AS similarity "
+            "RETURN p2.url AS url, p2.newspaper AS newspaper, gds.alpha.similarity.cosine(p1.vector, p2.vector) AS similarity "
         )
-        return [{"url": record["url"], "similarity": record["similarity"]} for record in result]
+        return [{"url": record["url"], "newspaper": record["newspaper"], "similarity": record["similarity"]} for record in result]
 
     @staticmethod
     def _get_list_similar_news(tx, timestamp):

@@ -3,6 +3,7 @@ import datetime
 import time
 from utils import elasticsearch_connector as es_con
 from utils.neo4j_connector import Neo4jConnector
+from utils.newspapers import newspapers
 
 if __name__ == "__main__":
     # Get journal path
@@ -37,10 +38,22 @@ if __name__ == "__main__":
                 # Compute cosine similarity for the last 24 hours
                 d = datetime.datetime.strptime(timestamp, "%Y-%m-%dT%H:%M:%S") - datetime.timedelta(days=1)
                 similarities = n4_con.get_cos_similarities(url, d.strftime("%Y-%m-%dT%H:%M:%S"))
-                # Create relation if similarity is bigger than 0.6 and less than 1 (exactly same news)
-                for s in similarities:
-                    if 0.6 < s['similarity'] < 1:
-                        n4_con.create_similarity_relation(url, s['url'], s['similarity'])
+                # Create relations, only one per newspaper (the most similar)
+                print('____________')
+                for n in newspapers:
+                    max_s = None  # Most similar news fro newspaper 'n'
+                    for s in similarities:
+                        if s['newspaper'].lower() == n:  # If news is from newspaper 'n'
+                            if max_s is None:
+                                max_s = s
+                            elif s['similarity'] > max_s['similarity']:
+                                max_s = s
+                    # Create the relation (only if is more than 0.6 similar)
+                    print('Newspapper: {}'.format(n))
+                    print(max_s)
+                    if max_s is not None and 0.6 < max_s['similarity'] < 1:
+                        n4_con.create_similarity_relation(url, max_s['url'], max_s['similarity'])
+
             except Exception as e:
                 print(e)
             # Write last processed timestamp

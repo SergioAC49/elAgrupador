@@ -91,8 +91,12 @@ class ElPeriodicoScraper(NewspaperScraper):
         return self.soup.find("h1", "title").get_text()
 
     def get_subtitles(self):
-        subtitles = self.soup.find("div", "subtitle").find_all("h2")
-        return [h2.get_text() for h2 in subtitles]
+        try:
+            s = self.soup.find("div", "subtitle").find_all("h2")
+            subtitles = [h2.get_text() for h2 in s]
+        except:
+            subtitles = []
+        return subtitles
 
     def get_text(self):
         all_p = self.soup.find("div", "ep-detail-body").find_all("p")
@@ -440,10 +444,13 @@ class PublicoScraper(NewspaperScraper):
         super().__init__(url, "Publico")
 
     def get_title(self):
-        return self.soup.find("div","title").find("a").get_text()
+        return self.soup.find("h1").get_text()
 
     def get_subtitles(self):
-        return self.soup.find("div", "article-header-epigraph col-12").find("h2").get_text()
+        try:
+            return [self.soup.find("div", "article-header-epigraph col-12").find("h2").get_text()]
+        except:
+            return []
 
     def get_text(self):
         all_p = self.soup.find("div","article-text").find_all("p")
@@ -452,11 +459,13 @@ class PublicoScraper(NewspaperScraper):
 
     def get_authors(self):
         try:
-            self.soup.find("li", "author-name").get_text()
+            authors = [self.soup.find("li", "author-name").get_text()]
         except:
-            self.soup.find("footer", "article-info").find("p", "signature").get_text()
-
-
+            try:
+                authors = [self.soup.find("footer", "article-info").find("p", "signature").get_text()]
+            except:
+                authors = []
+        return authors
 
     def get_date(self):
         str_date = self.soup.find("header", "article-published-info").find("span","published").get_text()

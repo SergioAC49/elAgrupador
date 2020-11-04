@@ -1,10 +1,12 @@
 import json
 from flask import Flask
 from flask import request
+from flask_cors import CORS
 from utils.neo4j_connector import Neo4jConnector
 from utils import elasticsearch_connector as es_con
 
 app = Flask(__name__)
+CORS(app)
 
 
 @app.route('/news/latest/')
