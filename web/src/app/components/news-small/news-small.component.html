@@ -2,7 +2,7 @@
   <img mat-card-image src={{news[0].picture_url}}>
   <mat-card-content>
     <li *ngFor="let article of news | slice:0:3">
-		<p><a class="header-title-link" target="_blank" href="{{article.url}}"> <b>{{article.newspaper}}</b>: {{article.title}} </a></p>
+		<p><a class="header-title-link" href="/article/{{article.id}}"> <b>{{article.newspaper}}</b>: {{article.title}} </a></p>
 	</li>
   </mat-card-content>
 </mat-card>

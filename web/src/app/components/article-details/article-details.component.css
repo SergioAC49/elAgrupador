@@ -1,0 +1,51 @@
+.news-card {
+  width: 80%;
+  height: 100%;
+  align-content: center;
+  align-self: center;
+  padding:25px;  
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.mat-button {
+  display: table-cell;
+  font-size: 14px;
+  margin-left: 8px;
+  min-width: 120px;
+}
+
+img {  
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: auto;
+  align-self: center;
+}
+@supports(object-fit: cover){
+    img {
+      height: 100%;
+      object-fit: cover;
+      object-position: center center;
+    }
+}
+
+.card-content {
+	padding: 15px;
+}
+
+.header-title-link {
+    font-family: "TiemposHeadline-Medium",serif;
+    font-size: 10px;
+    font-size: 1.563em;
+    text-decoration: none;
+} 
+
+a {
+    color: #000;
+    cursor: pointer;
+}
+
+li {
+    list-style-type: none;
+}

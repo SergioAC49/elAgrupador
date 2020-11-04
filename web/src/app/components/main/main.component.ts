@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {BreakpointObserver, Breakpoints} from '@angular/cdk/layout';
 
 import { NewsService } from '../../services/news.service';
 import { News } from '../../classes/news';
@@ -12,7 +13,15 @@ export class MainComponent implements OnInit {
 
 	public news: News[];
 
-	constructor(public service: NewsService) {
+	public isMobile: boolean = false;
+
+	constructor(public service: NewsService, breakpointObserver: BreakpointObserver) {
+
+		breakpointObserver.observe([
+			Breakpoints.Handset
+		]).subscribe(result => {
+			this.isMobile = result.matches;
+		});
 
 	    this.service.getNews().subscribe(data => {
 	    	console.log(data);

@@ -22,14 +22,28 @@ export class NewsService {
 		    );
 	}
 
-	getArticle(id: number): Observable<Article> {
-		const url = `${this.baseUrl}/${id}`;
+	getArticle(id: string): Observable<Article> {
+		const url = "http://cluster-rdlab.cs.upc.edu:50416/news/".concat(id.toString()).concat("/similar/");
+		console.log("URL: ", url);
 		return this.httpClient.get<Article>(url)
 			.pipe(
 				tap(_ => this.log(`fetched article id=${id}`)),
 				catchError(this.handleError<Article>(`getArticle id=${id}`))
 			);
 	}
+
+/*	search(words: string): Observable<Article[]> {
+		const url = "http://cluster-rdlab.cs.upc.edu:50416/search/";
+		console.log("URL: ", url);
+
+	    let formData: FormData = new FormData(); 
+	    formData.append('words', words);
+	    return this.httpClient.post(url, formData)
+			.pipe(
+				tap(_ => this.log(`fetched article id=${id}`)),
+				catchError(this.handleError<Article>(`getArticle id=${id}`))
+			);
+	}*/
 
 	/**
 	 * Handle Http operation that failed.

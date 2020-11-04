@@ -1,8 +1,8 @@
-
-
 <mat-toolbar>
 	<img class="img-responsive logo" src="assets/logo-transparente.png">
 	<span class="large">elAgrupador.es</span>
+	<a class="header-title-link" href="/">Inicio</a>
 	<span class="example-spacer"></span>
-	<mat-search-bar></mat-search-bar>
+	<!--input type="text" (keydown.enter)="search($event.target.value)"-->
+	<mat-search-bar [formControl]="control"></mat-search-bar>
 </mat-toolbar>

@@ -7,7 +7,7 @@
 .header-title-link {
     font-family: "TiemposHeadline-Medium",serif;
     font-size: 10px;
-    font-size: 1.210em;
+    font-size: 1.110em;
     text-decoration: none;
 }
 
@@ -18,5 +18,9 @@ a {
 
 mat-card img {
   object-fit: cover; /*this makes the image in src fit to the size specified below*/
-  height: 250px;
+  height: 300px;
+}
+
+li {
+    list-style-type: none;
 }

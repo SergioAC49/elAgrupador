@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+
+import { Article } from '../../classes/article';
 
 @Component({
   selector: 'app-similar-news',
@@ -7,9 +9,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SimilarNewsComponent implements OnInit {
 
-  constructor() { }
+	@Input() articles: Article[];
 
-  ngOnInit(): void {
-  }
+	constructor() {}
+
+	ngOnInit(): void {}
 
 }

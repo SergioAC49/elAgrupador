@@ -1,7 +1,12 @@
-<mat-card class="example-card">
-  <mat-card-header>
-    <img mat-card-avatar src={{article.picture_url}} class="example-header-image">
-    <mat-card-title>{{article.title}}</mat-card-title>
-    <mat-card-subtitle>{{article.newspaper}}</mat-card-subtitle>
-  </mat-card-header>
+<mat-card class="news-card">
+	<div class="card-image">
+		<img src={{article.picture_url}}>
+	</div>
+	<mat-card-content class="card-content">
+	    <mat-card-title><a class="header-title-link" target="_blank_" href="{{article.url}}">{{article.title}}</a></mat-card-title>
+	    <mat-card-subtitle>{{article.newspaper}}</mat-card-subtitle>
+	</mat-card-content>
+	<mat-card-actions>
+		<div class="mat-button"><a target="_blank_" href="{{article.url}}">VER MÁS</a></div>
+	</mat-card-actions>
 </mat-card>

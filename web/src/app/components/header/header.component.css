@@ -12,11 +12,22 @@
     width: fit-content;
     display: inline-block;
 }
-.large{
+.large {
     font-size: 40px;
     width: fit-content;
     padding: 10px;
     margin-left: 250px;
+}
+.header-title-link {
+    font-family: sans-serif,serif;
+    font-size: 10px;
+    font-size: 1.563em;
+    padding: 20px;
+    text-decoration: none;
+} 
+a {
+    color: #000;
+    cursor: pointer;
 }
 .right{
     float: right;
