@@ -124,16 +124,26 @@ class Neo4jConnector:
             "RETURN n {.url, .title, .picture_url, .newspaper}, ID(n), rel_news, rel_ids;"
         )
         record = result.single()
+        if record is not None:
+            news = record[0]
+            news['id'] = record[1]
 
-        news = record[0]
-        news['id'] = record[1]
-
-        news['similar'] = []
-        for i in range(0, len(record[2])):
-            # Get similar news info and add id to it
-            n = record[2][i]
-            n['id'] = record[3][i]
-            news['similar'].append(n)
+            news['similar'] = []
+            for i in range(0, len(record[2])):
+                # Get similar news info and add id to it
+                n = record[2][i]
+                n['id'] = record[3][i]
+                news['similar'].append(n)
+        else:
+            result = tx.run(
+                "MATCH (n:News) "
+                "WHERE ID(n) = " + str(id) + " "
+                "RETURN n {.url, .title, .picture_url, .newspaper}, ID(n);"
+            )
+            record = result.single()
+            news = record[0]
+            news['id'] = record[1]
+            news['similar'] = []
 
         return news
 
