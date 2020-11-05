@@ -18,7 +18,9 @@ export class SearchResultComponent implements OnInit {
 	public news: News;
 
 	constructor(public service: NewsService, private route: ActivatedRoute) {
+	}
 
+	ngOnInit(): void {
 
 		this.route.queryParams.subscribe(params => {
 			this.searchValue = params['value'];
@@ -28,15 +30,15 @@ export class SearchResultComponent implements OnInit {
 	    this.service.search(this.searchValue).subscribe(data => {
 	    	console.log(data);
 	    	data.forEach( (element) => {
-	    		element.id = element._id;
+	    		element.id = null;
+	    		element.url = element._id;
 	    		element.newspaper = element._source.newspaper;
 	    		element.title = element._source.title;
 	    		element.picture_url = element._source.picture_url;
 	    	});
 	    	this.news = data;
 	    });
-	}
 
-	ngOnInit(): void { }		
+	}		
 
 }

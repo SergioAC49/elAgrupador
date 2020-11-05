@@ -1,7 +1,15 @@
 <mat-card class="example-card">
   <mat-card-header>
   	<div mat-card-avatar class="example-header-image" style="background-image: url({{article.picture_url}});"></div>
-    <mat-card-title><a class="header-title-link" href="/article/{{article.id}}">{{article.title}}</a></mat-card-title>
+    <mat-card-title>
+    	<div *ngIf="article.id; then thenBlock else elseBlock"></div>
+    	<ng-template #thenBlock>
+    		<a class="header-title-link" href="/article/{{article.id}}">{{article.title}}</a>
+    	</ng-template>
+    	<ng-template #elseBlock>
+    		<a class="header-title-link" target="_blank" href="{{article.url}}">{{article.title}}</a>
+    	</ng-template>
+    </mat-card-title>
     <mat-card-subtitle>{{article.newspaper}}</mat-card-subtitle>
   </mat-card-header>
 </mat-card>

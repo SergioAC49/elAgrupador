@@ -16,6 +16,8 @@ export class HeaderComponent implements OnInit {
 	ngOnInit(): void { }
 
 	search(value: string) {
+		this.router.routeReuseStrategy.shouldReuseRoute = function () { return false; }
+	    this.router.onSameUrlNavigation = 'reload';
 		this.router.navigate(['/search'], { queryParams: { value: value } });
 	}
 
