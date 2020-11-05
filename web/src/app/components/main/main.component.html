@@ -7,14 +7,14 @@
 	</mat-grid-list>
 </ng-template>
 <ng-template #elseBlock>
-	<mat-grid-list class="desktop" [cols]="4" rowHeight="360px" [gutterSize]="'60px'">
-		<mat-grid-tile class="desktop" [rowspan]="2" [colspan]="4" *ngFor="let item of news | slice:0:1">
+	<mat-grid-list class="desktop" [cols]="12" rowHeight="360px" [gutterSize]="'30px'">
+		<mat-grid-tile class="desktop" [rowspan]="2" [colspan]="12" *ngFor="let item of news | slice:0:1">
 			<app-news-big class="news-component" [news]="item"></app-news-big>
 		</mat-grid-tile>
-		<mat-grid-tile [rowspan]="2" [colspan]="2" *ngFor="let item of news | slice:1:5">
+		<mat-grid-tile [rowspan]="2" [colspan]="6" *ngFor="let item of news | slice:1:5">
 			<app-news-medium class="news-component" [news]="item"></app-news-medium>
 		</mat-grid-tile>
-		<mat-grid-tile [rowspan]="1" [colspan]="1" *ngFor="let item of news | slice:5">
+		<mat-grid-tile [rowspan]="2" [colspan]="4" *ngFor="let item of news | slice:5">
 			<app-news-small class="news-component" [news]="item"></app-news-small>
 		</mat-grid-tile>
 	</mat-grid-list>	

@@ -1,29 +1,29 @@
 .news-card {
-  width: auto;
-  display: block;
-  margin: 15px;
-  padding:25px;  
-  overflow: hidden;
-}
-
-.card-image {
-	height: 35%;
-}
-
-img {
   width: 100%;
   height: auto;
+  margin-top: 5px;
+  padding:25px;
 }
-@supports(object-fit: cover){
-    img {
-      height: 100%;
-      object-fit: cover;
-      object-position: center center;
-    }
+
+.wrapper {
+  display: inline-block;
+  height: 520px;
+  width: 1200px;
+  padding: 5px;
+  margin: 5px;
+  background: white;
+}
+
+.wrapper img {
+  height: 100%;
+  width: 100%;
+  object-fit: contain;
 }
 
 .card-content {
-	padding: 15px;
+  padding: 20px;
+  height: 175px;
+  width: 1150px;
 }
 
 .header-title-link {

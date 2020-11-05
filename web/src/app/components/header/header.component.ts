@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormControl } from '@angular/forms';
+import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -10,17 +11,12 @@ export class HeaderComponent implements OnInit {
 
 	control: FormControl = new FormControl('');
 
-	constructor() {
-		this.control.valueChanges
-			.subscribe(value => {
-				console.log(value);
-			});
-	}
+	constructor(private router: Router) { }
 
 	ngOnInit(): void { }
 
 	search(value: string) {
-		console.log("Search: ", value);
+		this.router.navigate(['/search'], { queryParams: { value: value } });
 	}
 
 }

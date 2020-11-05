@@ -1,7 +1,29 @@
 .news-card {
-  max-width: 80%;
-  /*align-self: center;*/
-  margin: 15px;
+  width: 100%;
+  height: auto;
+  margin-top: 5px;
+  padding:25px;
+}
+
+.wrapper {
+  display: inline-block;
+  height: 300px;
+  width: 500px;
+  padding: 5px;
+  margin: 5px;
+  background: white;
+}
+
+.wrapper img {
+  height: 100%;
+  width: 100%;
+  object-fit: contain;
+}
+
+.card-content {
+  padding: 20px;
+  height: 200px;
+  width: 450px;
 }
 
 .header-title-link {

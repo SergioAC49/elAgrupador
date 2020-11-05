@@ -4,5 +4,5 @@
 	<a class="header-title-link" href="/">Inicio</a>
 	<span class="example-spacer"></span>
 	<!--input type="text" (keydown.enter)="search($event.target.value)"-->
-	<mat-search-bar [formControl]="control"></mat-search-bar>
+	<mat-search-bar [formControl]="control" (onEnter)="search($event)"></mat-search-bar>
 </mat-toolbar>
