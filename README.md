@@ -1,5 +1,5 @@
 # elAgrupador
-TFM - BD
+The present repository contains the code for a similar news aggregator for the main Spanish newspapers. It is based on pre-trained models of Transformer architecture and Elasticsearch is used as database. The repository is part of the MSc Final Project.
 
 # Requirements
 - Elastichsearch 7.8.1 (https://www.elastic.co/es/downloads/elasticsearch)
